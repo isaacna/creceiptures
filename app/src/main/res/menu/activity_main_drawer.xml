@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single" android:id="@+id/group_1">
+        <item
+                android:id="@+id/nav_home"
+                android:icon="@drawable/common_google_signin_btn_icon_dark"
+                android:title="hi"/>
+        <item
+                android:id="@+id/nav_favorites"
+                android:title="ho"/>
+        <item
+                android:id="@+id/nav_reviews"
+                android:title="hey"/>
+    </group>
+
+    <group android:id="@+id/group_2">
+        <item
+                android:id="@+id/nav_about_us"
+                android:title="boo"/>
+        <item
+                android:id="@+id/nav_privacy_policy"
+                android:title="dude"/>
+        <item
+                android:id="@+id/nav_sign_in_out"
+                android:title="bruh"/>
+    </group>
+
+</menu>

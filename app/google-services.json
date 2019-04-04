@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "233833874988",
+    "firebase_url": "https://cse438-final-na-dai.firebaseio.com",
+    "project_id": "cse438-final-na-dai",
+    "storage_bucket": "cse438-final-na-dai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233833874988:android:792af9b3a94f9232",
+        "android_client_info": {
+          "package_name": "com.example.creceiptures"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233833874988-a0hl4o91r8m2m5qmo27qul6k2nkis27q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.creceiptures",
+            "certificate_hash": "6bbf20d3b2703cb4e06f86b1007c1356e0d895fc"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcaKGpb6rWbRAJ6sXbHRezcGIw-gD7jx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233833874988-l0rnunmgnpohf4nvb5oik05i74fj2f10.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
