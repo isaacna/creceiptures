@@ -5,7 +5,7 @@ enum class UserInterfaceState {
     NO_DATA,
     RESET,
     HOME,
-    RESULTS,
-    FAVORITES,
-    REVIEW
+    TRADE,
+    LEADERBOARD,
+    ADD_PET
 }

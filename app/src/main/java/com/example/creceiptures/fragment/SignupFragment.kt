@@ -49,16 +49,16 @@ class SignupFragment(context: Context): Fragment() {
                             user.put("username", username)
 
                             // Add a new document with a generated ID
-                            App.userCollection
+                            App.firestore?.collection("user")
                                 ?.document(email)
                                 ?.set(user)
-                                ?.addOnSuccessListener{ documentReference ->
+                                ?.addOnSuccessListener { documentReference ->
                                     Log.d(
                                         logTag,
                                         "DocumentSnapshot added with ID: " + email
                                     )
                                 }
-                                ?.addOnFailureListener{ e -> Log.w(logTag, "Error adding document", e) }
+                                ?.addOnFailureListener { e -> Log.w(logTag, "Error adding document", e) }
 
                             // send info to update user info in MainActivity
                             val intent = Intent(parentContext, MainActivity::class.java)
@@ -67,14 +67,16 @@ class SignupFragment(context: Context): Fragment() {
                             activity!!.finish()
 
                         } else {
-                            Toast.makeText(parentContext, "Authentication failed",
-                                Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                parentContext, "Authentication failed",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
-            }
-            else {
+            } else {
                 Toast.makeText(parentContext, "Must fill all fields", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 }

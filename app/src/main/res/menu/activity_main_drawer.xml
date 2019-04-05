@@ -5,27 +5,29 @@
 
     <group android:checkableBehavior="single" android:id="@+id/group_1">
         <item
-                android:id="@+id/nav_home"
-                android:icon="@drawable/common_google_signin_btn_icon_dark"
-                android:title="hi"/>
-        <item
-                android:id="@+id/nav_favorites"
-                android:title="ho"/>
-        <item
-                android:id="@+id/nav_reviews"
-                android:title="hey"/>
+                android:id="@+id/nav_addpet"
+                android:title="Add pet"/>
     </group>
 
-    <group android:id="@+id/group_2">
+    <group android:checkableBehavior="single" android:id="@+id/group_2">
+        <item
+                android:id="@+id/nav_petgrid"
+                android:title="My pets"/>
+        <item
+                android:id="@+id/nav_trade"
+                android:title="Trade"/>
+        <item
+                android:id="@+id/nav_leaderboard"
+                android:title="Leaderboard"/>
+    </group>
+
+    <group android:id="@+id/group_3">
         <item
                 android:id="@+id/nav_about_us"
-                android:title="boo"/>
-        <item
-                android:id="@+id/nav_privacy_policy"
-                android:title="dude"/>
+                android:title="about???"/>
         <item
                 android:id="@+id/nav_sign_in_out"
-                android:title="bruh"/>
+                android:title="Sign out"/>
     </group>
 
 </menu>
