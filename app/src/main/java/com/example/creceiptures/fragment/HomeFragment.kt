@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.creceiptures.App
 import com.example.creceiptures.R
+import com.example.creceiptures.activity.MainActivity
 import com.example.creceiptures.adapter.GridAdapter
 import com.example.creceiptures.model.cReceiptureInGrid
 
@@ -22,16 +23,15 @@ class HomeFragment(context: Context): Fragment() {
     private var parentContext = context
     private var initialized: Boolean = false
     private var userSet: Boolean = false
-//    private var listener: OnFragmentInteractionListener? = null
     var adapter: GridAdapter? = null
     var pets: ArrayList<cReceiptureInGrid> = ArrayList<cReceiptureInGrid>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d("Ellen", "HomeFragment onCreateView")
-                // Inflate the layout for this fragment
+        // Inflate the layout for this fragment
         val view: View =  inflater.inflate(R.layout.fragment_home, container, false)
 
-        adapter = GridAdapter(this.context!!, pets)
+        adapter = GridAdapter(this.context!!, pets, parentContext as MainActivity)
         (view.findViewById<GridView>(R.id.gridView))?.adapter = adapter
 
         return view
@@ -81,16 +81,13 @@ class HomeFragment(context: Context): Fragment() {
             return
         }
 
-        val view = getView()
+//        val view = getView()
         if (App.firebaseAuth != null && App.firebaseAuth?.currentUser != null ) {
             val test = App.firebaseAuth?.currentUser?.email
-            Log.d("Ellen", "HomeFragment onResume: userSet == false")
             // get current user's username
             val user = App.firestore?.collection("user")?.document(App.firebaseAuth?.currentUser?.email!!)
             user?.get()?.addOnCompleteListener { task ->
                 Log.d("Ellen", "HomeFragment onResume: got user from firestore!")
-
-                // check if multiplier and streak needs to be reset due to inactivity
                 val username = task.result!!.data!!["username"] as String
                 loadPets(username)
                 view!!.findViewById<TextView>(R.id.title_bar).text = "${username}'s pets"
@@ -102,8 +99,6 @@ class HomeFragment(context: Context): Fragment() {
     }
 
     private fun loadPets(username: String) {
-        Log.d("Ellen", "HomeFragment loadPets")
-
         App.firestore?.collection("cReceipture")?.whereEqualTo("owner_curr", username)
             ?.get()
             ?.addOnSuccessListener { result ->

@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -17,7 +18,9 @@ import android.view.MenuItem
 import android.widget.Button
 import com.example.creceiptures.App
 import com.example.creceiptures.R
+import com.example.creceiptures.adapter.GridAdapter
 import com.example.creceiptures.enum.UserInterfaceState
+import com.example.creceiptures.fragment.DetailsFragment
 import com.example.creceiptures.fragment.HomeFragment
 import com.example.creceiptures.fragment.NoConnectionFragment
 import com.google.android.gms.tasks.Task
@@ -32,7 +35,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, GridAdapter.OnGridItemSelectListener {
 
     var currentView = UserInterfaceState.HOME
     private var isNetworkConnected = false
@@ -214,6 +217,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onGridItemSelect(petId: String) {
+        Log.d("Ellen", "onGridItemSelect")
+        if (this.isNetworkConnected) {
+            this.currentView = UserInterfaceState.DETAILS
+
+            // Load Fragment into View
+            val fm = supportFragmentManager
+
+            // add
+            val ft = fm.beginTransaction()
+            ft.replace(R.id.frag_placeholder, DetailsFragment(this@MainActivity, petId), "DETAILS_FRAG")
+            ft.commit()
+
+            supportActionBar?.title = "Details"
+        }
     }
 
 //    private fun displayDialog(layout: Int) {

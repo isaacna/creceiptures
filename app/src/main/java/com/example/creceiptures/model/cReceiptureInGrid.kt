@@ -1,8 +1,6 @@
 package com.example.creceiptures.model
 
 import android.net.Uri
-import com.google.firebase.firestore.DocumentSnapshot
-import java.net.URI
 
 class cReceiptureInGrid(id: String, name: String, value: Int, uri: Uri) {
     var name: String = name

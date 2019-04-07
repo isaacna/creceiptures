@@ -23,4 +23,8 @@
     <string name="test_puneet">https://robohash.org/puneet?set=set4</string>
     <string name="test_digshake">https://robohash.org/digshake?set=set4</string>
     <string name="test_taylor">https://robohash.org/taylor?set=set4</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_minigame">MinigameActivity</string>
 </resources>

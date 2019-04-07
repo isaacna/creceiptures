@@ -7,5 +7,6 @@ enum class UserInterfaceState {
     HOME,
     TRADE,
     LEADERBOARD,
-    ADD_PET
+    ADD_PET,
+    DETAILS
 }

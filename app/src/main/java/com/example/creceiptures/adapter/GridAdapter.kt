@@ -2,6 +2,7 @@ package com.example.creceiptures.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +15,12 @@ import kotlinx.android.synthetic.main.creceipture_grid_item.view.*
 class GridAdapter: BaseAdapter {
     var petList = ArrayList<cReceiptureInGrid>()
     var context: Context? = null
+    var listener: OnGridItemSelectListener? = null
 
-    constructor(context: Context, songlist: ArrayList<cReceiptureInGrid>) : super() {
+    constructor(context: Context, songlist: ArrayList<cReceiptureInGrid>, listener: OnGridItemSelectListener) : super() {
         this.context = context
         this.petList = songlist
+        this.listener = listener
     }
 
     override fun getCount(): Int {
@@ -42,17 +45,22 @@ class GridAdapter: BaseAdapter {
         Picasso.with(context).isLoggingEnabled = true   // for debugging
         Picasso.with(context)
             .load(pet.imgUri)
+            .resize(150, 150)
             .into(petView.img)                        //Your image view object.
         petView.name.text = pet.name
         petView.value.text = pet.value.toString()
 
 //         load up DetailsActivity with this song's info on click
-//        petView.setOnClickListener {
-//            val intent = Intent(context, DetailsActivity::class.java)
-//            intent.putExtra("PET_ID", pet.id)
-//            context!!.startActivity(intent)
-//        }
+        petView.setOnClickListener {
+            Log.d("Ellen", "grid item clicked")
+            listener?.onGridItemSelect(pet.id)
+        }
 
         return petView
+    }
+
+    // so that MainActivity responds to a grid item click by switching to DetailsFragment
+    interface OnGridItemSelectListener {
+        fun onGridItemSelect(petId: String)
     }
 }
