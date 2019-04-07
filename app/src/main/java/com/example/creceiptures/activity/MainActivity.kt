@@ -174,6 +174,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_addpet -> {
                 // TODO
+                val intent = Intent(this, AddPetActivity::class.java)
+                this.startActivity(intent)
             }
             R.id.nav_petgrid -> {
                 if (this.isNetworkConnected) {

@@ -22,7 +22,7 @@ class AccountActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // "Close" app (push to background), don't go back to the MainActivity
+        // "Close" app (push to background), don't go back to the AddPetActivity
         finishAffinity()
     }
 

@@ -1,4 +1,4 @@
-package com.example.creceiptures
+package com.example.creceiptures.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -9,14 +9,15 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.creceiptures.R
 import com.example.creceiptures.utils.AsyncUtils
 import java.io.*
 
-class MainActivity : AppCompatActivity() {
+class AddPetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_add_pet)
 
 //        val asyncUtils : AsyncUtils =  AsyncUtils()
 //        val receipt = asyncUtils.loadReceipt()
@@ -32,7 +33,9 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         if (intent.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM)
+            startActivityForResult(intent,
+                REQUEST_SELECT_IMAGE_IN_ALBUM
+            )
         }
     }
     companion object {

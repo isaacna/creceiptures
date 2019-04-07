@@ -59,7 +59,7 @@ class GridAdapter: BaseAdapter {
         return petView
     }
 
-    // so that MainActivity responds to a grid item click by switching to DetailsFragment
+    // so that AddPetActivity responds to a grid item click by switching to DetailsFragment
     interface OnGridItemSelectListener {
         fun onGridItemSelect(petId: String)
     }

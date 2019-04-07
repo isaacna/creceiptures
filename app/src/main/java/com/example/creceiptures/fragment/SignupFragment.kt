@@ -60,7 +60,7 @@ class SignupFragment(context: Context): Fragment() {
                                 }
                                 ?.addOnFailureListener { e -> Log.w(logTag, "Error adding document", e) }
 
-                            // send info to update user info in MainActivity
+                            // send info to update user info in AddPetActivity
                             val intent = Intent(parentContext, MainActivity::class.java)
                             intent.putExtra("email", email)
                             activity!!.setResult(Activity.RESULT_OK, intent)
