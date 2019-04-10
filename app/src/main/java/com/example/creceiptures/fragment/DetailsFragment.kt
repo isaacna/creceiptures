@@ -65,10 +65,9 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
                 Log.d("DetailsActivity", pet.toString())
 
                 // update UI to reflect pet stats
-                Picasso.with(parentContext).isLoggingEnabled = true   // for debugging
-                Picasso.with(parentContext)
+                Picasso.get()
                     .load(pet.imgUri)
-                    .resize(200, 200)
+                    .resizeDimen(R.dimen.details_img_size, R.dimen.details_img_size)
                     .into(view!!.findViewById<ImageView>(R.id.img))
                 view!!.findViewById<TextView>(R.id.name).text = pet.name
                 view!!.findViewById<TextView>(R.id.value).text = "petCoin value: ${pet.value.toString()}"

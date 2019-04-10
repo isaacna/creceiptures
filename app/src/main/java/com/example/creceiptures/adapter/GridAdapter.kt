@@ -42,10 +42,9 @@ class GridAdapter: BaseAdapter {
         var petView = inflater.inflate(R.layout.creceipture_grid_item, null)
 
         // https://alexdunn.org/2018/06/20/android-kotlin-basics-lazy-loading-images-with-picasso/
-        Picasso.with(context).isLoggingEnabled = true   // for debugging
-        Picasso.with(context)
+        Picasso.get()
             .load(pet.imgUri)
-            .resize(150, 150)
+            .resizeDimen(R.dimen.grid_img_size, R.dimen.grid_img_size)
             .into(petView.img)                        //Your image view object.
         petView.name.text = pet.name
         petView.value.text = pet.value.toString()
