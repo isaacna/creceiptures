@@ -55,25 +55,27 @@ class AddPetActivity : AppCompatActivity() {
                 try {
                     val v : ImageView = findViewById(R.id.test)
                     val bm: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-//                    v.setImageBitmap(bm)
+                    v.setImageBitmap(bm)
 
 
-                    var receiptFile : File = File(this.filesDir, "receipt.jpg")
-
+//                    var receiptFile : File = File(this.filesDir, "receipt.jpg")
+//
 //                    val os : OutputStream = BufferedOutputStream(FileOutputStream(receiptFile))
 //                    bm.compress(Bitmap.CompressFormat.JPEG,100, os)
 //                    os.close()
-
-//                    v.setImageDrawable()
+//
+//                    v.setImageDrawable(receiptFile)
 
                     val t: TextView = findViewById(R.id.hello)
-//                    t
 
                     val asyncUtils : AsyncUtils =  AsyncUtils(this)
-                    val receipt = asyncUtils.loadReceipt(bm)
+                    val receipt = asyncUtils.loadReceipt(bm).value
                     System.out.println("MAIN")
                     System.out.println("RECEIPT")
-                    System.out.println(receipt.value!!.getTotal())
+                    System.out.println(receipt!!.getTotal())
+
+                    val text = "Total: " + receipt.getTotal() + "\n" + "Date: " + receipt.getDate() + "\n" + "Merchant: " + receipt.getMerchant()
+                    t.setText(text)
 
 
                 }
