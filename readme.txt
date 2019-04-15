@@ -1,7 +1,7 @@
-TODO:
+Login info:
 
-* drawer navigation
-* Login views
-* login firebase
-* pet grid activity
-*
+ellen.dai@wustl.edu
+hello123
+
+digshake@gmail.com
+douggie

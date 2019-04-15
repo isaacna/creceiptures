@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/list_margin"
+            app:layout_constraintBottom_toTopOf="@+id/listOverline" android:id="@+id/header"
+            app:layout_constraintTop_toBottomOf="@+id/listView" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <TextView
+                android:text="@string/rank"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/rank" android:layout_weight="1"/>
+        <TextView
+                android:text="@string/user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/user" android:layout_weight="1"/>
+        <TextView
+                android:text="@string/num_pets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/num_pets" android:layout_weight="1"/>
+    </LinearLayout>
+
+    <!--view below imitates a horizontal line: https://stackoverflow.com/questions/4146221/how-to-put-a-horizontal-divisor-line-between-edit-texts-in-a-activity-->
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="@android:color/darker_gray" android:id="@+id/listOverline"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintBottom_toTopOf="@+id/listView" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"/>
+
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/listOverline"
+            android:id="@+id/listView"/>
+</android.support.constraint.ConstraintLayout>

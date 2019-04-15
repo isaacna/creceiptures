@@ -22,6 +22,7 @@ import com.example.creceiptures.adapter.GridAdapter
 import com.example.creceiptures.enum.UserInterfaceState
 import com.example.creceiptures.fragment.DetailsFragment
 import com.example.creceiptures.fragment.HomeFragment
+import com.example.creceiptures.fragment.LeaderboardFragment
 import com.example.creceiptures.fragment.NoConnectionFragment
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
@@ -197,7 +198,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // TODO
             }
             R.id.nav_leaderboard -> {
-                // TODO
+                if (this.isNetworkConnected) {
+                    this.currentView = UserInterfaceState.LEADERBOARD
+
+                    // Load Fragment into View
+                    val fm = supportFragmentManager
+
+                    // add
+                    val ft = fm.beginTransaction()
+                    ft.replace(R.id.frag_placeholder, LeaderboardFragment(this@MainActivity), "HOME_FRAG")
+                    ft.commit()
+
+                    supportActionBar?.title = "Leaderboard"
+                }
             }
             R.id.nav_about_us -> {
 //                displayDialog(R.layout.dialog_about_us)

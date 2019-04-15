@@ -71,6 +71,7 @@ class SignupFragment(context: Context): Fragment() {
                                 parentContext, "Authentication failed",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            System.out.println(task.exception.toString())
                         }
                     }
             } else {

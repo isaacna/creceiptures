@@ -17,6 +17,15 @@
     <string name="sign_out">Sign Out</string>
     <string name="no_connection">No Connection</string>
 
+    <!--leaderboard-->
+    <string name="rank">Rank</string>
+    <string name="pet_name">Name</string>
+    <string name="cReceipture">cReceipture</string>
+    <string name="user">User</string>
+    <string name="owner">Owner</string>
+    <string name="petCoin">Total petCoin</string>
+    <string name="num_pets"># pets</string>
+
     <!--CREATURE URIS FOR TESTING-->
     <string name="test_ellen">https://robohash.org/ellen?set=set4</string>
     <string name="test_isaac">https://robohash.org/isaac?set=set4</string>

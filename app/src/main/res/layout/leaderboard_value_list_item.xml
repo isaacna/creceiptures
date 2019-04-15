@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingVertical="@dimen/list_margin">
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content" android:id="@+id/rank" android:layout_weight="1"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1">
+        <ImageView
+                android:layout_height="@dimen/leaderboard_img_size"
+                android:layout_width="@dimen/leaderboard_img_size"
+                tools:srcCompat="@tools:sample/avatars" android:id="@+id/pet_icon"
+                android:layout_weight="1"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/pet_name" android:layout_weight="1"/>
+    </LinearLayout>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content" android:id="@+id/owner" android:layout_weight="1"/>
+    <TextView
+            android:text="TextView"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/petCoin" android:layout_weight="1"/>
+</LinearLayout>

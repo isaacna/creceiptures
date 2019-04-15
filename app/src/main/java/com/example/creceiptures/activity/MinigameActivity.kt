@@ -20,6 +20,8 @@ class MinigameActivity : AppCompatActivity() {
 
         pet =intent.getParcelableExtra("PET")
         Log.d("MinigameActivity", pet.toString())
+
+
     }
 
 }
