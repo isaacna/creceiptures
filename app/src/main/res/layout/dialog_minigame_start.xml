@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/dialog_horizontal_margin"
+              android:padding="@dimen/dialog_padding"
+              android:gravity="center" android:orientation="vertical">
+    <TextView
+            android:text="@string/lets_play"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content" android:id="@+id/lets_play"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+    <TextView
+            android:text="@string/instructions_expanded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/instructions"/>
+    <Button
+            android:text="@string/start"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/start_button"/>
+</LinearLayout>

@@ -29,7 +29,7 @@ import kotlin.math.sqrt
 class DetailsFragment(context: Context, petId: String) : Fragment() {
     private var parentContext: Context = context
     private val petId: String = petId
-    private lateinit var pet: cReceipture
+    private var pet: cReceipture? = null
 //    private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,8 +48,6 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
         Log.d("Ellen", "DetailsFragment onStart")
 
         // get pet from firebase
-        // https://medium.com/@scarygami/cloud-firestore-quicktip-documentsnapshot-vs-querysnapshot-70aef6d57ab3
-        // https://firebase.google.com/docs/firestore/query-data/get-data
         val petDoc = App.firestore?.collection("cReceipture")?.document(petId)
         petDoc?.get()?.addOnCompleteListener { task: Task<DocumentSnapshot> ->
             if (task.isSuccessful) {
@@ -66,11 +64,11 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
 
                 // update UI to reflect pet stats
                 Picasso.get()
-                    .load(pet.imgUri)
+                    .load(pet?.imgUri)
                     .resizeDimen(R.dimen.details_img_size, R.dimen.details_img_size)
                     .into(view!!.findViewById<ImageView>(R.id.img))
-                view!!.findViewById<TextView>(R.id.name).text = pet.name
-                view!!.findViewById<TextView>(R.id.value).text = "petCoin value: ${pet.value.toString()}"
+                view!!.findViewById<TextView>(R.id.name).text = pet?.name
+                view!!.findViewById<TextView>(R.id.value).text = "petCoin value: ${pet?.value.toString()}"
 
                 view!!.findViewById<Button>(R.id.minigame_button).setOnClickListener{
                     Log.d("DetailsActivity", "play button clicked")
@@ -83,20 +81,19 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
                 Log.d("DetailsActivity", "failed to find pet ${petId}")
             }
         }
+
+        // listen for updates, mainly to "value"
+        petDoc?.addSnapshotListener{ snapshot: DocumentSnapshot?, e ->
+            if (e != null) {
+                Log.w("DetailsFragment", "Listen to pet snapshot failed.", e)
+            }
+            else if (snapshot != null && snapshot.exists()) {
+                pet?.value = (snapshot?.get("value") as Long).toInt()
+                view!!.findViewById<TextView>(R.id.value).text = "petCoin value: ${pet?.value.toString()}"
+            } else {
+                Log.d("DetailsFragment", "Current data: null")
+            }
+        }
     }
-
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            listener = context
-//        } else {
-//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-//        }
-//    }
-
-//    override fun onDetach() {
-//        super.onDetach()
-//        listener = null
-//    }
 
 }

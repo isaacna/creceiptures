@@ -9,4 +9,33 @@
         tools:showIn="@layout/activity_minigame"
         tools:context=".activity.MinigameActivity">
 
+    <ImageView
+            android:layout_width="@dimen/details_img_size"
+            android:layout_height="@dimen/details_img_size"
+            tools:srcCompat="@tools:sample/avatars"
+            android:id="@+id/pet" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="238dp" android:layout_marginTop="93dp"
+            app:layout_constraintTop_toBottomOf="@+id/timer" app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="106dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="106dp"/>
+    <TextView
+            android:text="@string/timer_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/timer"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="32dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="106dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="107dp" app:layout_constraintHorizontal_bias="0.504"/>
+    <TextView
+            android:text="@string/instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/instructions" android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/timer"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="132dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="133dp"/>
 </android.support.constraint.ConstraintLayout>
