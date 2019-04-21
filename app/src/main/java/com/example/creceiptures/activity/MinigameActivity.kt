@@ -28,6 +28,7 @@ class MinigameActivity : AppCompatActivity() {
     private lateinit var timer: TapTimer
     private var inProgress: Boolean = false
     private var points: Int = 0
+    lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class MinigameActivity : AppCompatActivity() {
         pet = intent.getParcelableExtra("PET")
         Log.d("MinigameActivity", pet.toString())
 
+        dialog = Dialog(this)
         timer = TapTimer(this)
 
     }
@@ -77,7 +79,6 @@ class MinigameActivity : AppCompatActivity() {
     }
 
     private fun showInitDialog() {
-        val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_minigame_start)
 
         val window = dialog.window
@@ -93,7 +94,6 @@ class MinigameActivity : AppCompatActivity() {
     }
 
     private fun showEndDialog() {
-        val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_minigame_end)
 
         val window = dialog.window
