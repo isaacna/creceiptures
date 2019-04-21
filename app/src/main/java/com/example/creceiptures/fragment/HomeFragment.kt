@@ -45,26 +45,6 @@ class HomeFragment(context: Context): Fragment() {
         if (!this.initialized) {
             val fm = fragmentManager
             val ft = fm?.beginTransaction()
-//            ft?.add(R.id.list_holder, WhatsNewFragment(this.parentContext), "NEW_FRAG")
-//            ft?.commit()
-
-//            search_edit_text.setOnEditorActionListener { _, actionId, _ ->
-//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                    val searchText = search_edit_text.text
-//                    search_edit_text.setText("")
-//                    if (searchText.toString() == "") {
-//                        val toast = Toast.makeText(this.parentContext, "Please enter text", Toast.LENGTH_SHORT)
-//                        toast.setGravity(Gravity.CENTER, 0, 0)
-//                        toast.show()
-//                        return@setOnEditorActionListener true
-//                    }
-//                    else {
-//                        return@setOnEditorActionListener false
-//                    }
-//                }
-//
-//                return@setOnEditorActionListener false
-//            }
 
             this.initialized = true
         }

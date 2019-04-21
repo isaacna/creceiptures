@@ -47,6 +47,8 @@ class SignupFragment(context: Context): Fragment() {
                             val user: HashMap<String, Any> = HashMap()
                             user.put("email", email)
                             user.put("username", username)
+                            user.put("numPets", 5)
+                            user.put("totalPetCoin", 0)
 
                             // Add a new document with a generated ID
                             App.firestore?.collection("user")

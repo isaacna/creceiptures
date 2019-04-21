@@ -72,39 +72,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (App.firestore == null) {
             App.firestore = FirebaseFirestore.getInstance()
         }
-        if (App.firebaseAuth != null && App.firebaseAuth?.currentUser == null) {
-            val intent = Intent(this, AccountActivity::class.java)
-            startActivity(intent)
-        }
-
-        // Load Fragment into View
-//        val fm = supportFragmentManager
+//        if (App.firebaseAuth != null && App.firebaseAuth?.currentUser == null) {
+//            val intent = Intent(this, AccountActivity::class.java)
+//            startActivity(intent)
+//        }
 
         // add
         val ft = fm.beginTransaction()
 
-//        if (networkInfo == null) {
-//            Log.e("NETWORK", "not connected")
-//            ft.add(R.id.frag_placeholder, NoConnectionFragment())
-//        }
-
-//        else {
-            Log.e("NETWORK", "connected")
-            ft.add(R.id.frag_placeholder, HomeFragment(this), "HOME_FRAG")
-            this.isNetworkConnected = true
-//        }
+        Log.e("NETWORK", "connected")
+        ft.add(R.id.frag_placeholder, HomeFragment(this), "HOME_FRAG")
+        this.isNetworkConnected = true
 
         ft.commit()
-
-//        // if no user logged in, go to login/signup activity
-//        if (App.firebaseAuth?.currentUser == null) {
-//            Log.d("Ellen", "tryna open AccountActivity")
-//            val intent = Intent(this, AccountActivity::class.java)
-//            startActivityForResult(intent, SIGN_IN_REQUEST)
-//        }
-
-
-
         supportActionBar?.title = "Home"
     }
 
@@ -174,7 +154,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_addpet -> {
-                // TODO
                 val intent = Intent(this, AddPetActivity::class.java)
                 this.startActivity(intent)
             }
