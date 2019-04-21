@@ -153,13 +153,18 @@ class AddPetActivity : AppCompatActivity() {
         val userDoc = App.firestore?.collection(("user"))?.document(App.firebaseAuth?.currentUser?.email!!)
         userDoc?.get()?.addOnCompleteListener { task: Task<DocumentSnapshot> ->
             if (task.isSuccessful) {
-                Log.d("DetailsActivity", "user successfully found")
+                Log.d("AddPetActivity", "user successfully found")
                 val oldTotalPetCoin: Long = task.result!!.data!!["totalPetCoin"] as Long
                 userDoc.update(
                     "totalPetCoin", (oldTotalPetCoin + cReceipture.value)
                 )
+                val oldPetCount : Long = task.result!!.data!!["numPets"] as Long
+                userDoc.update(
+                    "numPets", (oldPetCount + 1)
+                )
+
             } else {
-                Log.d("MinigameActivity", "failed to find update user total petcoin")
+                Log.d("AddPetActivity", "failed to find update user total petcoin")
             }
         }
     }
