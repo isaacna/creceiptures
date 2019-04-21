@@ -6,7 +6,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.util.Log
-import com.example.creceiptures.Receipt
+import com.example.creceiptures.model.Receipt
 
 class AsyncUtils(context: Context) {
     var receipt : MutableLiveData<Receipt> = MutableLiveData()

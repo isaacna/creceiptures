@@ -1,4 +1,4 @@
-package com.example.creceiptures
+package com.example.creceiptures.model
 
 import java.io.Serializable
 import java.util.*
