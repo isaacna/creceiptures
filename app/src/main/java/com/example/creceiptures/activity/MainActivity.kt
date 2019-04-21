@@ -195,7 +195,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
             R.id.nav_trade -> {
-                // TODO
+                val intent = Intent(this, TradeActivity::class.java)
+                this.startActivity(intent)
             }
             R.id.nav_leaderboard -> {
                 if (this.isNetworkConnected) {

@@ -31,7 +31,8 @@
     <string name="instructions">Tap until time runs out!</string>
     <string name="lets_play">Let\'s play!</string>
     <string name="instructions_expanded">Play with your cReceipture! Tap on your pet until the 15 seconds runs out to
-        upgrade it. The more you tap, the more petCoin you gain.</string>
+        upgrade it. The more you tap, the more petCoin you gain.
+    </string>
     <string name="start">Start</string>
     <string name="nice_work">Nice work!</string>
     <string name="minigame_complete_info">Your pet gained XX petCoin!</string>
