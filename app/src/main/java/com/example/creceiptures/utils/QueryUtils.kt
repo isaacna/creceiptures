@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
-import com.example.creceiptures.Receipt
+import com.example.creceiptures.model.Receipt
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
