@@ -3,6 +3,7 @@ package com.example.creceiptures.activity
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +11,19 @@ import android.widget.*
 import com.example.creceiptures.App
 import com.example.creceiptures.R
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_request_trade.*
 
 class RequestTradeActivity : AppCompatActivity() {
+    private val logTag: String = this.javaClass.toString()
 
     var otherAdapter : OthersArrayAdapter? = null
     var otherSpinner : Spinner? = null
 
     var userPetAdapter : PetArrayAdapter? = null
     var userPetSpinner : Spinner? = null
+
+    var otherPetAdapter : PetArrayAdapter? = null
+    var otherPetSpinner : Spinner? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +35,15 @@ class RequestTradeActivity : AppCompatActivity() {
                 val username = task.result!!.data!!["username"] as String
                 otherSpinner = this.findViewById(R.id.other_spinner_view)
                 userPetSpinner = findViewById(R.id.user_pet_spinner_view)
+                otherPetSpinner = findViewById(R.id.other_pet_spinner_view)
 
                 loadOthers(username)
                 loadUserPets(username)
 
-
+                val button : Button = findViewById(R.id.sendRequestButton)
+                button.setOnClickListener {
+                    sendRequest(username)
+                }
             }
         }
 
@@ -48,6 +58,7 @@ class RequestTradeActivity : AppCompatActivity() {
                 for (document in result) {
                     othersArray.add(document.data["username"] as String)
                 }
+                //don't inclue your own username
                 othersArray.remove(username)
 
                 otherAdapter = OthersArrayAdapter(this, othersArray)
@@ -64,6 +75,7 @@ class RequestTradeActivity : AppCompatActivity() {
                         System.out.println(parent?.getItemAtPosition(position).toString())
 
                         //TODO loadOtherPets()
+                        loadOtherPets(parent?.getItemAtPosition(position).toString())
 
                     }
 
@@ -71,9 +83,24 @@ class RequestTradeActivity : AppCompatActivity() {
             }
     }
 
-    //dependent on selected of others spinner 
-    fun loadOtherPets() {
-
+    //dependent on selected of others spinner
+    fun loadOtherPets(username : String) {
+        System.out.println("USERNAME HERE")
+        System.out.println(username)
+        App.firestore?.collection("cReceipture")?.whereEqualTo("owner_curr", username)
+            ?.get()
+            ?.addOnSuccessListener { result ->
+                val petArray = ArrayList<PetItem>()
+                for (document in result) {
+                    petArray.add(PetItem(
+                        document.data["name"] as String,
+                        document.data["imgUri"] as String,
+                        (document.data["value"] as Long).toInt()
+                    ))
+                }
+                otherPetAdapter = PetArrayAdapter(this, petArray)
+                otherPetSpinner!!.adapter = otherPetAdapter
+            }
     }
 
     //load user pets into spinner
@@ -96,28 +123,50 @@ class RequestTradeActivity : AppCompatActivity() {
             }
     }
 
-    fun loadIncomingTrades(user : String) {
-        App.firestore?.collection("trades")?.whereEqualTo("accepter",user)
-            ?.get()
-            ?.addOnSuccessListener { result ->
-                val tradeArray = ArrayList<TradeItem>()
-                for (document in result) {
-                    val tradeItem = TradeItem(
-                        document.data["requester"] as String,
-                        document.data["requester_pet"] as String,
-                        document.data["requester_pet_uri"] as String,
-                        document.data["accepter"] as String,
-                        document.data["accepter_pet"] as String,
-                        document.data["accepter_pet_uri"] as String,
-                        false)
-                    tradeArray.add(tradeItem)
+    fun sendRequest(username : String) {
+        if(otherSpinner!!.selectedItem!=null && otherPetSpinner!!.selectedItem!=null && userPetSpinner!!.selectedItem != null) {
+            System.out.println("SENDING TRADE REQUEST")
+
+            //get vals from spinners
+            val otherName : String = other_spinner_view.selectedItem as String
+            val otherPet : PetItem = other_pet_spinner_view.selectedItem as PetItem
+            val userPet : PetItem = user_pet_spinner_view.selectedItem as PetItem
+
+            //prep trade data to insert
+            var data: HashMap<String, Any> = HashMap<String, Any>()
+            data.put("accepter", otherName)
+            data.put("accepter_pet", otherPet.name)
+            data.put("accepter_pet_uri", otherPet.uri)
+            data.put("requester", username)
+            data.put("requester_pet", userPet.name)
+            data.put("requester_pet_uri", userPet.uri)
+
+
+            val newTrade = App.firestore?.collection("trades")
+            newTrade
+                ?.document()
+                ?.set(data)
+                ?.addOnSuccessListener { documentReference ->
+                    Log.d(
+                        logTag,
+                        "DocumentSnapshot added"
+                    )
                 }
-                System.out.println(tradeArray.get(0).accepter_pet)
-            }
+                ?.addOnFailureListener { e -> Log.w(logTag, "Error adding trade document", e) }
+            this.finish()
+        }
+        else {
+            //make toast if not all fields are full
+            val duration = Toast.LENGTH_SHORT
+            val toast = Toast.makeText(this, "Fill out all fields!", duration)
+            toast.show()
+        }
     }
+
 }
 
 //http://developine.com/custom-spinner-with-imageview-in-android-kotlin-tutorial/
+//custom adapter for spinner
 class OthersArrayAdapter(context: Context, others : ArrayList<String> ) : BaseAdapter() {
     val others : ArrayList<String>
     init {
@@ -150,6 +199,7 @@ class OthersArrayAdapter(context: Context, others : ArrayList<String> ) : BaseAd
     }
 }
 
+//custom adapter for spinner
 class PetArrayAdapter( context: Context, others : ArrayList<PetItem> ) : BaseAdapter() {
     val pets : ArrayList<PetItem>
     init {
@@ -188,6 +238,7 @@ class PetArrayAdapter( context: Context, others : ArrayList<PetItem> ) : BaseAda
     }
 }
 
+//item for a pet in a spinner
 class PetItem(name : String, uri : String, value : Int) {
     val name : String
     val uri : String

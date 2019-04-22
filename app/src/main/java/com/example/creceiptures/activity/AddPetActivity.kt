@@ -126,45 +126,45 @@ class AddPetActivity : AppCompatActivity() {
     fun addPetToFirebase(cReceipture: cReceipture) {
         if (App.firebaseAuth != null && App.firebaseAuth?.currentUser != null ) {
 
-        }
 
-        System.out.println("ISSUE URI HERE " + cReceipture.imgUri.toString())
+            System.out.println("ISSUE URI HERE " + cReceipture.imgUri.toString())
 
-        var data : HashMap<String, Any> = HashMap<String,Any>()
-        data.put("name", cReceipture.name)
-        data.put("owner_curr", cReceipture.owner_curr)
-        data.put("owner_og", cReceipture.owner_og)
-        data.put("value", cReceipture.value)
-        data.put("imgUri", cReceipture.imgUri.toString())
+            var data: HashMap<String, Any> = HashMap<String, Any>()
+            data.put("name", cReceipture.name)
+            data.put("owner_curr", cReceipture.owner_curr)
+            data.put("owner_og", cReceipture.owner_og)
+            data.put("value", cReceipture.value)
+            data.put("imgUri", cReceipture.imgUri.toString())
 
-        val petTable = App.firestore?.collection("cReceipture")
-        petTable
-            ?.document()
-            ?.set(data)
-            ?.addOnSuccessListener { documentReference ->
-            Log.d(
-                logTag,
-                "DocumentSnapshot added"
-            )
-        }
-            ?.addOnFailureListener { e -> Log.w(logTag, "Error adding document", e) }
+            val petTable = App.firestore?.collection("cReceipture")
+            petTable
+                ?.document()
+                ?.set(data)
+                ?.addOnSuccessListener { documentReference ->
+                    Log.d(
+                        logTag,
+                        "DocumentSnapshot added"
+                    )
+                }
+                ?.addOnFailureListener { e -> Log.w(logTag, "Error adding document", e) }
 
-        //update user's total in firebase
-        val userDoc = App.firestore?.collection(("user"))?.document(App.firebaseAuth?.currentUser?.email!!)
-        userDoc?.get()?.addOnCompleteListener { task: Task<DocumentSnapshot> ->
-            if (task.isSuccessful) {
-                Log.d("AddPetActivity", "user successfully found")
-                val oldTotalPetCoin: Long = task.result!!.data!!["totalPetCoin"] as Long
-                userDoc.update(
-                    "totalPetCoin", (oldTotalPetCoin + cReceipture.value)
-                )
-                val oldPetCount : Long = task.result!!.data!!["numPets"] as Long
-                userDoc.update(
-                    "numPets", (oldPetCount + 1)
-                )
+            //update user's total in firebase
+            val userDoc = App.firestore?.collection(("user"))?.document(App.firebaseAuth?.currentUser?.email!!)
+            userDoc?.get()?.addOnCompleteListener { task: Task<DocumentSnapshot> ->
+                if (task.isSuccessful) {
+                    Log.d("AddPetActivity", "user successfully found")
+                    val oldTotalPetCoin: Long = task.result!!.data!!["totalPetCoin"] as Long
+                    userDoc.update(
+                        "totalPetCoin", (oldTotalPetCoin + cReceipture.value)
+                    )
+                    val oldPetCount: Long = task.result!!.data!!["numPets"] as Long
+                    userDoc.update(
+                        "numPets", (oldPetCount + 1)
+                    )
 
-            } else {
-                Log.d("AddPetActivity", "failed to find update user total petcoin")
+                } else {
+                    Log.d("AddPetActivity", "failed to find update user total petcoin")
+                }
             }
         }
     }
