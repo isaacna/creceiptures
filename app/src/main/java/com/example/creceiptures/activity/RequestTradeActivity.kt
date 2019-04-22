@@ -42,7 +42,7 @@ class RequestTradeActivity : AppCompatActivity() {
 
                 val button : Button = findViewById(R.id.sendRequestButton)
                 button.setOnClickListener {
-                    sendRequest(username)
+                    sendRequest(username, App.firebaseAuth?.currentUser?.email!!)
                 }
             }
         }
@@ -54,12 +54,14 @@ class RequestTradeActivity : AppCompatActivity() {
         App.firestore?.collection("user")
             ?.get()
             ?.addOnSuccessListener { result ->
-                val othersArray  = ArrayList<String>()
+                val othersArray  = ArrayList<OtherItem>()
                 for (document in result) {
-                    othersArray.add(document.data["username"] as String)
+                    if(username != document.data["username"]) {
+                        othersArray.add(OtherItem(
+                                document.data["username"] as String,
+                                document.data["email"] as String))
+                    }
                 }
-                //don't inclue your own username
-                othersArray.remove(username)
 
                 otherAdapter = OthersArrayAdapter(this, othersArray)
                 otherSpinner!!.adapter = otherAdapter
@@ -75,7 +77,8 @@ class RequestTradeActivity : AppCompatActivity() {
                         System.out.println(parent?.getItemAtPosition(position).toString())
 
                         //TODO loadOtherPets()
-                        loadOtherPets(parent?.getItemAtPosition(position).toString())
+                        val otherItemInSpinner = parent?.getItemAtPosition(position) as OtherItem
+                        loadOtherPets(otherItemInSpinner.username)
 
                     }
 
@@ -123,28 +126,31 @@ class RequestTradeActivity : AppCompatActivity() {
             }
     }
 
-    fun sendRequest(username : String) {
+    fun sendRequest(username : String, userEmail : String) {
         if(otherSpinner!!.selectedItem!=null && otherPetSpinner!!.selectedItem!=null && userPetSpinner!!.selectedItem != null) {
             System.out.println("SENDING TRADE REQUEST")
 
             //get vals from spinners
-            val otherName : String = other_spinner_view.selectedItem as String
+            val other : OtherItem = other_spinner_view.selectedItem as OtherItem
             val otherPet : PetItem = other_pet_spinner_view.selectedItem as PetItem
             val userPet : PetItem = user_pet_spinner_view.selectedItem as PetItem
 
             //prep trade data to insert
             var data: HashMap<String, Any> = HashMap<String, Any>()
-            data.put("accepter", otherName)
+            data.put("accepter", other.username)
             data.put("accepter_pet", otherPet.name)
             data.put("accepter_pet_uri", otherPet.uri)
+            data.put("accepter_email", other.email)
             data.put("requester", username)
             data.put("requester_pet", userPet.name)
             data.put("requester_pet_uri", userPet.uri)
+            data.put("requester_email", userEmail)
 
+            val documentPath : String = username + "-" + userPet.name + "-for-" + other.username + "-" + otherPet.name
 
             val newTrade = App.firestore?.collection("trades")
             newTrade
-                ?.document()
+                ?.document(documentPath)
                 ?.set(data)
                 ?.addOnSuccessListener { documentReference ->
                     Log.d(
@@ -167,8 +173,8 @@ class RequestTradeActivity : AppCompatActivity() {
 
 //http://developine.com/custom-spinner-with-imageview-in-android-kotlin-tutorial/
 //custom adapter for spinner
-class OthersArrayAdapter(context: Context, others : ArrayList<String> ) : BaseAdapter() {
-    val others : ArrayList<String>
+class OthersArrayAdapter(context: Context, others : ArrayList<OtherItem> ) : BaseAdapter() {
+    val others : ArrayList<OtherItem>
     init {
         this.others = others
     }
@@ -180,7 +186,7 @@ class OthersArrayAdapter(context: Context, others : ArrayList<String> ) : BaseAd
         val view : View = inflater.inflate(R.layout.spinner_item_other, parent, false)
 
         val otherName : TextView = view.findViewById(R.id.otherName)
-        otherName.text = others[position]
+        otherName.text = others[position].username
         return view
     }
 
@@ -247,5 +253,14 @@ class PetItem(name : String, uri : String, value : Int) {
         this.name = name
         this.uri = uri
         this.value = value
+    }
+}
+
+class OtherItem(username : String, email : String ) {
+    val username : String
+    val email :String
+    init {
+        this.username = username
+        this.email = email
     }
 }

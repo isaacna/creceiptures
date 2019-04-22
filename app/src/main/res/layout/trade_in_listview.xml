@@ -14,7 +14,7 @@
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/otherPetName" android:textSize="12sp" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/otherPetNameDecision" android:textSize="12sp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="40dp"
             app:layout_constraintTop_toTopOf="@+id/userPetName"/>
     <ImageView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content" tools:srcCompat="@tools:sample/avatars"
             android:id="@+id/otherPetImage" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/otherPetName"/>
+            app:layout_constraintTop_toBottomOf="@+id/otherPetNameDecision"/>
     <TextView
             android:text="for"
             android:layout_width="wrap_content"

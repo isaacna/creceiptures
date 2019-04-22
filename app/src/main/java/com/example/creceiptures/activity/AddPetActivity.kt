@@ -138,7 +138,7 @@ class AddPetActivity : AppCompatActivity() {
 
             val petTable = App.firestore?.collection("cReceipture")
             petTable
-                ?.document()
+                ?.document(cReceipture.name + "-" + cReceipture.owner_og)
                 ?.set(data)
                 ?.addOnSuccessListener { documentReference ->
                     Log.d(

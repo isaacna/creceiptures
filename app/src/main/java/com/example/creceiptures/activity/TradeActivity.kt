@@ -2,11 +2,8 @@ package com.example.creceiptures.activity
 
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +21,7 @@ class TradeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_trade)
 
         if (App.firebaseAuth != null && App.firebaseAuth?.currentUser != null ) {
-            val incomingButton: Button = this.findViewById(R.id.incomingTradesButton)
+            val incomingButton: Button = findViewById(R.id.incomingTradesButton)
             val outgoingButton: Button = findViewById(R.id.outgoingTradeButton)
 
             val user = App.firestore?.collection("user")?.document(App.firebaseAuth?.currentUser?.email!!)
@@ -55,9 +52,11 @@ class TradeActivity : AppCompatActivity() {
                         document.data["requester"] as String,
                         document.data["requester_pet"] as String,
                         document.data["requester_pet_uri"] as String,
+                        document.data["requester_email"] as String,
                         document.data["accepter"] as String,
                         document.data["accepter_pet"] as String,
                         document.data["accepter_pet_uri"] as String,
+                        document.data["accepter_email"] as String,
                         false)
                     tradeArray.add(tradeItem)
                 }
@@ -78,9 +77,11 @@ class TradeActivity : AppCompatActivity() {
                         document.data["requester"] as String,
                         document.data["requester_pet"] as String,
                         document.data["requester_pet_uri"] as String,
+                        document.data["requester_email"] as String,
                         document.data["accepter"] as String,
                         document.data["accepter_pet"] as String,
                         document.data["accepter_pet_uri"] as String,
+                        document.data["accepter_email"] as String,
                         true)
                     tradeArray.add(tradeItem)
                 }
@@ -98,13 +99,15 @@ class TradeActivity : AppCompatActivity() {
 
 }
 
-class TradeItem(requester: String, requester_pet : String, requester_pet_uri : String, accepter: String, accepter_pet: String, accepter_pet_uri : String, isRequester : Boolean) {
+class TradeItem(requester: String, requester_pet : String, requester_pet_uri : String, requester_email : String, accepter: String, accepter_pet: String, accepter_pet_uri : String, accepter_email : String, isRequester : Boolean) {
     val requester : String
     val requester_pet : String
     val requester_pet_uri: String
+    val requester_email : String
     val accepter: String
     val accepter_pet: String
     val accepter_pet_uri: String
+    val accepter_email : String
     val isRequester : Boolean
 
     init {
@@ -115,6 +118,8 @@ class TradeItem(requester: String, requester_pet : String, requester_pet_uri : S
         this.accepter_pet = accepter_pet
         this.accepter_pet_uri = accepter_pet_uri
         this.isRequester = isRequester
+        this.requester_email = requester_email
+        this.accepter_email = accepter_email
     }
 }
 
@@ -131,7 +136,7 @@ class TradeArrayAdapter(context : Context, resource : Int, trades : ArrayList<Tr
 
         val userPetName : TextView = view.findViewById(R.id.userPetName)
         val userPetView : ImageView = view.findViewById(R.id.userPetImage)
-        val otherPetName : TextView = view.findViewById(R.id.otherPetName)
+        val otherPetName : TextView = view.findViewById(R.id.otherPetNameDecision)
         val otherPetView : ImageView = view.findViewById(R.id.otherPetImage)
 
         val tradeItem = trades[position]
@@ -148,8 +153,21 @@ class TradeArrayAdapter(context : Context, resource : Int, trades : ArrayList<Tr
 
             //make trade request view for requesters
             view.setOnClickListener {
-                System.out.println("i am clicked!!!")
-                //TODO
+
+                val intent : Intent = Intent()
+                intent.putExtra("isRequester", true)
+                intent.putExtra("accepter", tradeItem.accepter)
+                intent.putExtra("accepter_pet", tradeItem.accepter_pet)
+                intent.putExtra("accepter_pet_uri", tradeItem.accepter_pet_uri)
+                intent.putExtra("accepter_email", tradeItem.accepter_email)
+                intent.putExtra("requester", tradeItem.requester)
+                intent.putExtra("requester_pet", tradeItem.requester_pet)
+                intent.putExtra("requester_pet_uri", tradeItem.requester_pet_uri)
+                intent.putExtra("requester_email", tradeItem.requester_email)
+
+                intent.setClass(context, TradeDecisionActivity::class.java)
+                intent.setAction(TradeDecisionActivity::class.java.name)
+                context.startActivity(intent)
             }
 
         }
@@ -167,8 +185,21 @@ class TradeArrayAdapter(context : Context, resource : Int, trades : ArrayList<Tr
 
             //make trade request view for accepters
             view.setOnClickListener {
-                System.out.println("i am clicked!!!")
-                //TODO
+
+                val intent : Intent = Intent()
+                intent.putExtra("isRequester", false)
+                intent.putExtra("accepter", tradeItem.accepter)
+                intent.putExtra("accepter_pet", tradeItem.accepter_pet)
+                intent.putExtra("accepter_pet_uri", tradeItem.accepter_pet_uri)
+                intent.putExtra("accepter_email", tradeItem.accepter_email)
+                intent.putExtra("requester", tradeItem.requester)
+                intent.putExtra("requester_pet", tradeItem.requester_pet)
+                intent.putExtra("requester_pet_uri", tradeItem.requester_pet_uri)
+                intent.putExtra("requester_email", tradeItem.requester_email)
+
+                intent.setClass(context, TradeDecisionActivity::class.java)
+                intent.setAction(TradeDecisionActivity::class.java.name)
+                context.startActivity(intent)
             }
         }
 
