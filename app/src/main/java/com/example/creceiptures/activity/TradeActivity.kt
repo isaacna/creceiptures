@@ -62,7 +62,7 @@ class TradeActivity : AppCompatActivity() {
                     tradeArray.add(tradeItem)
                 }
                 adapter = TradeArrayAdapter(this, R.id.tradeView, tradeArray)
-                val lv : ListView = findViewById(R.id.tradeView)
+                val lv : ListView = this.findViewById(R.id.tradeView)
                 lv.adapter = adapter
             }
     }
@@ -145,6 +145,13 @@ class TradeArrayAdapter(context : Context, resource : Int, trades : ArrayList<Tr
 
             Picasso.get().load(tradeItem.requester_pet_uri).into(userPetView)
             Picasso.get().load(tradeItem.accepter_pet_uri).into(otherPetView)
+
+            //make trade request view for requesters
+            view.setOnClickListener {
+                System.out.println("i am clicked!!!")
+                //TODO
+            }
+
         }
         //if user is accepter for trade
         else {
@@ -157,7 +164,15 @@ class TradeArrayAdapter(context : Context, resource : Int, trades : ArrayList<Tr
             //set images for pet trade
             Picasso.get().load(tradeItem.accepter_pet_uri).into(userPetView)
             Picasso.get().load(tradeItem.requester_pet_uri).into(otherPetView)
+
+            //make trade request view for accepters
+            view.setOnClickListener {
+                System.out.println("i am clicked!!!")
+                //TODO
+            }
         }
+
+
 
         return view
     }
