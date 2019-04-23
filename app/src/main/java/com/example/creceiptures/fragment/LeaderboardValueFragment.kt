@@ -31,10 +31,13 @@ class LeaderboardValueFragment(context: Context) : Fragment() {
         adapter = ListAdapter(this.context!!, 0, pets)
         (view.findViewById<ListView>(R.id.listView))?.adapter = adapter
 
-        if (pets.size == 0) // hasn't queried firebase yet
-        loadPets()
-
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (pets.size == 0)
+            loadPets()
     }
 
     private fun loadPets() {

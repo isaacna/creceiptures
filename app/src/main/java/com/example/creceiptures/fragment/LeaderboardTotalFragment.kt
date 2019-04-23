@@ -31,10 +31,13 @@ class LeaderboardTotalFragment(context: Context) : Fragment() {
         adapter = ListAdapter(this.context!!, 0, users)
         (view.findViewById<ListView>(R.id.listView))?.adapter = adapter
 
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
         if (users.size == 0)
             loadUsers()
-
-        return view
     }
 
     // note: would have to be more efficient in a larger scale.
