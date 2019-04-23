@@ -51,6 +51,7 @@ class TradeDecisionActivity : AppCompatActivity() {
 
             declineButton.setOnClickListener {
                 deleteTrade(accepter, accepter_pet, requester, requester_pet)
+                finish()
             }
 
             //load images into views
@@ -69,10 +70,12 @@ class TradeDecisionActivity : AppCompatActivity() {
 
             acceptButton.setOnClickListener {
                 acceptTrade(accepter, accepter_email, accepter_pet, requester, requester_email, requester_pet)
+                finish()
             }
 
             declineButton.setOnClickListener {
                 deleteTrade(accepter, accepter_pet, requester, requester_pet)
+                finish()
             }
 
             Picasso.get().load(accepter_pet_uri ).into(yourPetImage)
