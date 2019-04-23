@@ -90,6 +90,10 @@ class TradeDecisionActivity : AppCompatActivity() {
 
     fun swapPetData(ownerA: String, owner_A_email : String, petA : String, ownerB : String, owner_B_email : String, petB: String) {
 
+        var valueA: Long = 0;
+        var valueB: Long = 0;
+        var valGotten = false;
+
         //swap owner of pet A to owner B
         //get og owner of pet A to get document id for pet A
         App.firestore?.collection("cReceipture")
@@ -114,26 +118,15 @@ class TradeDecisionActivity : AppCompatActivity() {
                         )
 
                         //get pet A value
-                        val valueA = task.result!!.data!!["value"] as Long
+//                        val valueA = task.result!!.data!!["value"] as Long
+                        valueA = task.result!!.data!!["value"] as Long
+                        if (valGotten == true) {
+                            updateUserPetCoins(owner_A_email, valueA, owner_B_email, valueB)
+                        }
+                        else {
+                            valGotten = true
+                        }
                         System.out.println("A VAL " + valueA)
-
-                        //get user B doc and add pet A value
-                        val userB = App.firestore?.collection("user")?.document(owner_B_email)
-                        userB?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
-                            if(task2.isSuccessful) {
-                                val oldTotalPetCoin = task2.result!!.data!!["totalPetCoin"] as Long
-                                userB.update("totalPetCoin", oldTotalPetCoin + valueA)
-                            }
-                        }
-
-                        //get user A doc and subtract pet A value
-                        val userA = App.firestore?.collection("user")?.document(owner_A_email)
-                        userA?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
-                            if(task2.isSuccessful) {
-                                val oldTotalPetCoin = task2.result!!.data!!["totalPetCoin"] as Long
-                                userA.update("totalPetCoin", oldTotalPetCoin - valueA)
-                            }
-                        }
 
                     } else {
                         Log.d("TradeDecisionActivity", "failed to swap pet A owners")
@@ -168,24 +161,15 @@ class TradeDecisionActivity : AppCompatActivity() {
                         )
 
                         //get pet B value
-                        val valueB = task.result!!.data!!["value"] as Long
-
-                        //get user B doc
-                        val userB = App.firestore?.collection("user")?.document(owner_B_email)
-                        userB?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
-                            if(task2.isSuccessful) {
-                                val oldTotalPetCoin = task2.result!!.data!!["totalPetCoin"] as Long
-                                userB.update("totalPetCoin", oldTotalPetCoin - valueB)
-                            }
+//                        val valueB = task.result!!.data!!["value"] as Long
+                        valueB = task.result!!.data!!["value"] as Long
+                        if (valGotten == true) {
+                            updateUserPetCoins(owner_A_email, valueA, owner_B_email, valueB)
                         }
-
-                        val userA = App.firestore?.collection("user")?.document(owner_A_email)
-                        userA?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
-                            if(task2.isSuccessful) {
-                                val oldTotalPetCoin = task2.result!!.data!!["totalPetCoin"] as Long
-                                userA.update("totalPetCoin", oldTotalPetCoin + valueB)
-                            }
+                        else {
+                            valGotten = true
                         }
+                        System.out.println("B VAL " + valueB)
 
                     } else {
                         Log.d("TradeDecisionActivity", "failed to swap pet B owners")
@@ -196,6 +180,28 @@ class TradeDecisionActivity : AppCompatActivity() {
                 //subtract pet B petcoin from user B
             }
 
+    }
+
+    fun updateUserPetCoins(owner_A_email : String, valA : Long, owner_B_email : String, valB: Long) {
+        System.out.println("updateUserPetCoins()")
+        val userB = App.firestore?.collection("user")?.document(owner_B_email)
+        userB?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
+            if(task2.isSuccessful) {
+                System.out.println("updating user B")
+                val oldTotalPetCoin = task2.result!!.data!!["totalPetCoin"] as Long
+                userB.update("totalPetCoin", oldTotalPetCoin + valA - valB)
+            }
+        }
+
+        //get user A doc and subtract pet A value
+        val userA = App.firestore?.collection("user")?.document(owner_A_email)
+        userA?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
+            if(task2.isSuccessful) {
+                System.out.println("updating user A")
+                val oldTotalPetCoin = task2.result!!.data!!["totalPetCoin"] as Long
+                userA.update("totalPetCoin", oldTotalPetCoin + valB - valA)
+            }
+        }
     }
 
     fun acceptTrade(accepter: String, accepter_email : String, accepter_pet : String, requester : String, requester_email : String, requester_pet: String) {
