@@ -15,6 +15,10 @@ import com.squareup.picasso.Picasso
 class TradeActivity : AppCompatActivity() {
 
     var adapter : TradeArrayAdapter? = null
+    var currView : Views = Views.NONE
+    lateinit var username: String
+    enum class Views { NONE, INCOMING, OUTGOING }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +30,7 @@ class TradeActivity : AppCompatActivity() {
 
             val user = App.firestore?.collection("user")?.document(App.firebaseAuth?.currentUser?.email!!)
             user?.get()?.addOnCompleteListener { task ->
-                val username = task.result!!.data!!["username"] as String
+                username = task.result!!.data!!["username"] as String
 
                 //when you want to load incoming trades
                 incomingButton.setOnClickListener {
@@ -41,8 +45,20 @@ class TradeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (currView == Views.INCOMING) {
+            loadIncomingTrades(username)
+        }
+        else if (currView == Views.OUTGOING) {
+            loadOutgoingTrades(username)
+        }
+    }
+
     //loading incoming trades
     fun loadIncomingTrades(user : String) {
+        currView = Views.INCOMING
         App.firestore?.collection("trades")?.whereEqualTo("accepter",user)
             ?.get()
             ?.addOnSuccessListener { result ->
@@ -68,6 +84,7 @@ class TradeActivity : AppCompatActivity() {
 
     //loading outgoing trades
     fun loadOutgoingTrades(user : String) {
+        currView = Views.OUTGOING
         App.firestore?.collection("trades")?.whereEqualTo("requester",user)
             ?.get()
             ?.addOnSuccessListener { result ->

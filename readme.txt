@@ -17,4 +17,4 @@ We also decided to use a website called RoboHash to generate creatures rather th
 
 We also were thinking about adding stuff like a creceipture's birth place (where the receipt was from), but we didn't think it was important enough to include for this deadline. However, our code is modular enough where adding things like that would scale easily.
 
-Credits to Taggun API, RoboHash, Firebase 
+Credits to Taggun API, RoboHash, Firebase, Picasso, and AndriodViewAnimations
