@@ -49,7 +49,7 @@ class LeaderboardValueFragment(context: Context) : Fragment() {
     }
 
     private fun loadPets() {
-        App.firestore?.collection("creceipture")?.orderBy("value", Query.Direction.DESCENDING)
+        App.firestore?.collection("cReceipture")?.orderBy("value", Query.Direction.DESCENDING)
             ?.limit(15)
             ?.get()
             ?.addOnSuccessListener { result ->

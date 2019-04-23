@@ -138,7 +138,7 @@ class MinigameActivity : AppCompatActivity() {
             // update pet value in firebase
             activity.inProgress = false
             activity.pet.value += (activity.points / 2)
-            val petDoc = App.firestore?.collection("creceipture")?.document(activity.pet.id)
+            val petDoc = App.firestore?.collection("cReceipture")?.document(activity.pet.id)
             petDoc?.update(
                 "value", activity.pet.value
             )

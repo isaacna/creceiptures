@@ -48,7 +48,7 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
         Log.d("Ellen", "DetailsFragment onStart")
 
         // get pet from firebase
-        val petDoc = App.firestore?.collection("creceipture")?.document(petId)
+        val petDoc = App.firestore?.collection("cReceipture")?.document(petId)
         petDoc?.get()?.addOnCompleteListener { task: Task<DocumentSnapshot> ->
             if (task.isSuccessful) {
                 Log.d("DetailsActivity", "${petId} successfully found")
