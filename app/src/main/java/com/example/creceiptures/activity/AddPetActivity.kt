@@ -37,6 +37,7 @@ class AddPetActivity : AppCompatActivity() {
         selectImageInAlbum()
     }
 
+    //get an image from camera roll
     fun selectImageInAlbum() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
@@ -46,8 +47,8 @@ class AddPetActivity : AppCompatActivity() {
             )
         }
     }
+
     companion object {
-        private val REQUEST_TAKE_PHOTO = 0
         private val REQUEST_SELECT_IMAGE_IN_ALBUM = 1
     }
 
@@ -57,15 +58,18 @@ class AddPetActivity : AppCompatActivity() {
             // Make sure the request was successful
             if (resultCode == Activity.RESULT_OK) {
 
+                //path to receipt image
                 val receiptPath : Uri = data!!.data!!
 
                 try {
+                    //set image of receipt
                     val v : ImageView = findViewById(R.id.test)
                     val bm: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, receiptPath)
                     v.setImageBitmap(bm)
 
                     val t: TextView = findViewById(R.id.hello)
 
+                    //fetch the receipt using async task
                     val asyncUtils : AsyncUtils =  AsyncUtils(this)
                     val receipt = asyncUtils.loadReceipt(bm).value
 
@@ -76,19 +80,13 @@ class AddPetActivity : AppCompatActivity() {
                         val user = App.firestore?.collection("user")?.document(App.firebaseAuth?.currentUser?.email!!)
                         user?.get()?.addOnCompleteListener { task ->
                             username = task.result!!.data!!["username"] as String
-                            System.out.println("username here")
-                            System.out.println(username)
                             t.setText(username)
 
-
-
+                            //create unique url for fetching creceipture image
                             val merchant = receipt!!.getMerchant().replace(" ", "%20")
                             val uri : Uri = Uri.parse("https://robohash.org/" + receipt.getTotal() + merchant)
-                            System.out.println("merchant " + merchant)
-                            System.out.println("URI " + uri.toString())
-                            System.out.println("uri end")
 
-                            //load pet image
+                            //load pet image into imageview
                             getPetImage(uri)
 
                             //set onclick listener for naming the pet then submitting it
@@ -96,7 +94,7 @@ class AddPetActivity : AppCompatActivity() {
                             button.setOnClickListener {
                                 val petNameEditText : EditText = findViewById(R.id.petNameInput)
                                 if(petNameEditText.text != null) {
-                                    System.out.println("Total: " + receipt.getTotal().toInt().toString())
+
                                     //create pet
                                     val name = petNameEditText.text.toString()
                                     val value = receipt.getTotal()
@@ -126,16 +124,14 @@ class AddPetActivity : AppCompatActivity() {
     fun addPetToFirebase(cReceipture: cReceipture) {
         if (App.firebaseAuth != null && App.firebaseAuth?.currentUser != null ) {
 
-
-            System.out.println("ISSUE URI HERE " + cReceipture.imgUri.toString())
-
-            var data: HashMap<String, Any> = HashMap<String, Any>()
+            val data: HashMap<String, Any> = HashMap<String, Any>()
             data.put("name", cReceipture.name)
             data.put("owner_curr", cReceipture.owner_curr)
             data.put("owner_og", cReceipture.owner_og)
             data.put("value", cReceipture.value)
             data.put("imgUri", cReceipture.imgUri.toString())
 
+            //get pet document and add new creceipture
             val petTable = App.firestore?.collection("creceipture")
             petTable
                 ?.document(cReceipture.name + "-" + cReceipture.owner_og)
@@ -172,11 +168,9 @@ class AddPetActivity : AppCompatActivity() {
     //load pet image
     fun getPetImage(uri: Uri) {
 
-        var petView : ImageView = findViewById(R.id.newGeneratedPet)
+        val petView : ImageView = findViewById(R.id.newGeneratedPet)
 
         try {
-            System.out.println("url")
-            System.out.println(uri.toString())
             Picasso.get().load(uri).into(petView)
         }
         catch(e: IOException) {

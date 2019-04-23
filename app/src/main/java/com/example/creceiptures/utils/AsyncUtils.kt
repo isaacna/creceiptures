@@ -23,8 +23,6 @@ class AsyncUtils(context: Context) {
         override fun doInBackground(vararg param: Bitmap): Receipt? {
             val result : Receipt? = QueryUtils.fetchReceiptInfo(param[0], context)
             if (result != null) {
-                System.out.println(result.getAddress())
-
             }
             else {
                 System.out.println("RESULT WAS NULL")

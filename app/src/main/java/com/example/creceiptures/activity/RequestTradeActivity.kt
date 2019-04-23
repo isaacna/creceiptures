@@ -72,24 +72,18 @@ class RequestTradeActivity : AppCompatActivity() {
 
                     }
 
+                    //get username from first spinner
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        System.out.println("SPINS")
-                        System.out.println(parent?.getItemAtPosition(position).toString())
-
-                        //TODO loadOtherPets()
                         val otherItemInSpinner = parent?.getItemAtPosition(position) as OtherItem
                         loadOtherPets(otherItemInSpinner.username)
-
                     }
 
                 }
             }
     }
 
-    //dependent on selected of others spinner
+    //load pets dependent on selected of others spinner
     fun loadOtherPets(username : String) {
-        System.out.println("USERNAME HERE")
-        System.out.println(username)
         App.firestore?.collection("creceipture")?.whereEqualTo("owner_curr", username)
             ?.get()
             ?.addOnSuccessListener { result ->
@@ -126,6 +120,7 @@ class RequestTradeActivity : AppCompatActivity() {
             }
     }
 
+    //submit trade request to firebase
     fun sendRequest(username : String, userEmail : String) {
         if(otherSpinner!!.selectedItem!=null && otherPetSpinner!!.selectedItem!=null && userPetSpinner!!.selectedItem != null) {
             System.out.println("SENDING TRADE REQUEST")
@@ -136,7 +131,7 @@ class RequestTradeActivity : AppCompatActivity() {
             val userPet : PetItem = user_pet_spinner_view.selectedItem as PetItem
 
             //prep trade data to insert
-            var data: HashMap<String, Any> = HashMap<String, Any>()
+            val data: HashMap<String, Any> = HashMap<String, Any>()
             data.put("accepter", other.username)
             data.put("accepter_pet", otherPet.name)
             data.put("accepter_pet_uri", otherPet.uri)

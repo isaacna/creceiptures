@@ -22,17 +22,13 @@ class QueryUtils : Application() {
 
     companion object {
         private val LogTag = this::class.java.simpleName
-//        private const val BaseUrl = "https://api.taggun.io/api/receipt/v1/simple/file"
         private const val BaseUrl = "https://api.taggun.io/api/receipt/v1/simple/encoded"
 
         fun fetchReceiptInfo(bitmap : Bitmap, context : Context) : Receipt? {
-            val url: URL? =
-                createUrl(BaseUrl)
+            val url: URL? = createUrl(BaseUrl)
 
             var jsonResponse: String? = null
             try {
-                System.out.println("making http request")
-//                jsonResponse = makeHttpRequest2(url, bitmap, context)
                 jsonResponse = makeHttpRequest(url, bitmap, context)
             }
 
@@ -43,20 +39,15 @@ class QueryUtils : Application() {
             return extractDataFromJson(jsonResponse)
         }
 
+        //generate receipt from json
         private fun extractDataFromJson(trackJson: String?): Receipt? {
             if (TextUtils.isEmpty(trackJson)) {
                 return null
             }
 
-            System.out.println("android dev is stupid as shit ")
-
             var receipt = Receipt()
 
-            System.out.println("fuck me ")
-
-
             try {
-                System.out.println("lol mother fucker")
                 val baseJSONresponse = JSONObject(trackJson)
 
                 val total = returnValueOrDefault<JSONObject>(
@@ -91,9 +82,6 @@ class QueryUtils : Application() {
                 var addressData = ""
                 var stateData = ""
 
-
-                System.out.println("null stuff")
-
                 if (total != null) {
                     if(total.has("data")) {
                         totalData = returnValueOrDefault<Double>(
@@ -112,8 +100,6 @@ class QueryUtils : Application() {
                     }
                 }
 
-                System.out.println("fuck date")
-
                 if (date != null) {
                     if(date.has("data")) {
                         dateData = returnValueOrDefault<String>(
@@ -122,8 +108,6 @@ class QueryUtils : Application() {
                         ) as String
                     }
                 }
-
-                System.out.println("date is ok")
 
                 if (merchant != null) {
                     if(merchant.has("data")) {
@@ -165,7 +149,6 @@ class QueryUtils : Application() {
 
             }
 
-
             catch (e: JSONException) {
                 Log.e(LogTag, "Problem parsing the product JSON results", e)
             }
@@ -173,6 +156,7 @@ class QueryUtils : Application() {
             return receipt
         }
 
+        //create url
         private fun createUrl(stringUrl: String): URL? {
             var url: URL? = null
             try {
@@ -189,15 +173,11 @@ class QueryUtils : Application() {
             var jsonResponse = ""
 
             if (url == null) {
-                System.out.println("URL WAS NULL")
-
                 return jsonResponse
             }
 
             var urlConnection: HttpURLConnection? = null
             var inputStream: InputStream? = null
-            val boundary : String = "*****"
-
             try {
 
                 val os : ByteArrayOutputStream = ByteArrayOutputStream()
@@ -213,36 +193,27 @@ class QueryUtils : Application() {
                 urlConnection.setRequestProperty("Connection", "Keep-Alive");
                 urlConnection.setRequestProperty("Cache-Control", "no-cache");
 
+                //create receipt request object
                 val receiptRequest : ReceiptRequest = ReceiptRequest(encodedImage, "receipt.jpg", "image/jpeg")
 
+                //format body of http request
                 var body : JSONObject = JSONObject()
                 body.put("image", receiptRequest.getImage())
                 body.put("filename", receiptRequest.getFilename())
                 body.put("contentType", receiptRequest.getContentType())
 
-
-
                 //post instead of GET
                 urlConnection.requestMethod = "POST" //changed this
                 urlConnection.setRequestProperty("Content-Type", "application/json")
 
-                System.out.println("ababababababab")
-
+                //convert body to byte array and write to http request
                 var arr : ByteArray = body.toString().toByteArray()
                 urlConnection.outputStream.write(arr)
 
-
-                System.out.println("jfjfjfjfjfjfj")
-
-//                System.out.println(urlConnection.toString())
-
                 urlConnection.connect()
-                System.out.println("successful connection")
 
 
                 if (urlConnection.responseCode == 200) {
-                    System.out.println("good connection")
-
                     inputStream = urlConnection.inputStream
                     jsonResponse = readFromStream(inputStream)
                     System.out.println(urlConnection.responseMessage)
@@ -265,7 +236,6 @@ class QueryUtils : Application() {
                 inputStream?.close()
             }
 
-            System.out.println(jsonResponse)
             return jsonResponse
 
         }

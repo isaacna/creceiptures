@@ -20,18 +20,17 @@ class TradeDecisionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_trade_decision)
 
         val isRequester : Boolean = intent.getBooleanExtra("isRequester", false)
-        System.out.println("IS REQUESTER " + isRequester)
 
         val acceptButton : Button = findViewById(R.id.acceptButton)
         val declineButton : Button = findViewById(R.id.declineButton)
         val pendingView : TextView = findViewById(R.id.pendingText)
 
         val requester : String = intent.getStringExtra("requester")
-        var requester_pet : String = intent.getStringExtra("requester_pet")
-        var requester_pet_uri : String = intent.getStringExtra("requester_pet_uri")
+        val requester_pet : String = intent.getStringExtra("requester_pet")
+        val requester_pet_uri : String = intent.getStringExtra("requester_pet_uri")
         val accepter : String = intent.getStringExtra("accepter")
-        var accepter_pet : String = intent.getStringExtra("accepter_pet")
-        var accepter_pet_uri : String = intent.getStringExtra("accepter_pet_uri")
+        val accepter_pet : String = intent.getStringExtra("accepter_pet")
+        val accepter_pet_uri : String = intent.getStringExtra("accepter_pet_uri")
 
         val accepter_email :String = intent.getStringExtra("accepter_email")
         val requester_email : String = intent.getStringExtra("requester_email")
@@ -41,7 +40,6 @@ class TradeDecisionActivity : AppCompatActivity() {
 
         val yourText : TextView = findViewById(R.id.yourPetNameDecision)
         val otherText : TextView = findViewById(R.id.otherPetNameDecision)
-
 
         if (isRequester) { //user is requester, set button to cancel request only
             acceptButton.visibility = View.GONE
@@ -55,6 +53,7 @@ class TradeDecisionActivity : AppCompatActivity() {
                 deleteTrade(accepter, accepter_pet, requester, requester_pet)
             }
 
+            //load images into views
             Picasso.get().load(requester_pet_uri).into(yourPetImage)
             Picasso.get().load(accepter_pet_uri).into(otherPetImage)
 
@@ -88,6 +87,7 @@ class TradeDecisionActivity : AppCompatActivity() {
 
     }
 
+    //swap owners for pets and update
     fun swapPetData(ownerA: String, owner_A_email : String, petA : String, ownerB : String, owner_B_email : String, petB: String) {
 
         var valueA: Long = 0;
@@ -111,30 +111,27 @@ class TradeDecisionActivity : AppCompatActivity() {
                 val petDocA = App.firestore?.collection("creceipture")?.document(petA + "-" + owner_og)
                 petDocA?.get()?.addOnCompleteListener {task: Task<DocumentSnapshot> ->
                     if (task.isSuccessful) {
-//                        System.out.println("updating pet A ")
                         //swap owners
                         petDocA.update(
                             "owner_curr", ownerB
                         )
 
                         //get pet A value
-//                        val valueA = task.result!!.data!!["value"] as Long
                         valueA = task.result!!.data!!["value"] as Long
+
+                        //prevent data race
                         if (valGotten == true) {
                             updateUserPetCoins(owner_A_email, valueA, owner_B_email, valueB)
                         }
                         else {
                             valGotten = true
                         }
-                        System.out.println("A VAL " + valueA)
 
                     } else {
                         Log.d("TradeDecisionActivity", "failed to swap pet A owners")
                     }
                 }
 
-                //add pet A petcoin to user B
-                //subtract pet A petcoin from user A
             }
 
         //swap owner of pet B
@@ -154,36 +151,30 @@ class TradeDecisionActivity : AppCompatActivity() {
                 val petDocB = App.firestore?.collection("creceipture")?.document(petB + "-" + owner_og)
                 petDocB?.get()?.addOnCompleteListener {task: Task<DocumentSnapshot> ->
                     if (task.isSuccessful) {
-//                        System.out.println("updating pet B ")
-
                         petDocB.update(
                             "owner_curr", ownerA
                         )
 
                         //get pet B value
-//                        val valueB = task.result!!.data!!["value"] as Long
                         valueB = task.result!!.data!!["value"] as Long
+
+                        //prevent data race
                         if (valGotten == true) {
                             updateUserPetCoins(owner_A_email, valueA, owner_B_email, valueB)
                         }
                         else {
                             valGotten = true
                         }
-                        System.out.println("B VAL " + valueB)
 
                     } else {
                         Log.d("TradeDecisionActivity", "failed to swap pet B owners")
                     }
                 }
-
-                //add pet B petcoin to user A
-                //subtract pet B petcoin from user B
             }
-
     }
 
+    //update user total pet coin count
     fun updateUserPetCoins(owner_A_email : String, valA : Long, owner_B_email : String, valB: Long) {
-        System.out.println("updateUserPetCoins()")
         val userB = App.firestore?.collection("user")?.document(owner_B_email)
         userB?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
             if(task2.isSuccessful) {
@@ -208,15 +199,8 @@ class TradeDecisionActivity : AppCompatActivity() {
         //update trades
         deleteTrade(accepter, accepter_pet, requester, requester_pet)
 
-        //switch ownership
-        System.out.println("USER A = " + accepter)
-        System.out.println("USER B = " + requester)
+        //switch ownership and update total pet coin count
         swapPetData(accepter, accepter_email, accepter_pet, requester, requester_email, requester_pet)
-
-
-        //adjust petcoin value of users
-
-
     }
 
     //delete from trades
@@ -228,8 +212,6 @@ class TradeDecisionActivity : AppCompatActivity() {
                 ?.document(documentPath)
                 ?.delete()
         }
-
     }
-
 }
 

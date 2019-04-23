@@ -19,6 +19,6 @@
                 android:horizontalSpacing="15dp"
                 android:numColumns="auto_fit"
                 android:verticalSpacing="15dp"
-                android:id="@+id/gridView"/>
+                android:id="@+id/gridView" android:visibility="visible"/>
 
 </LinearLayout>
