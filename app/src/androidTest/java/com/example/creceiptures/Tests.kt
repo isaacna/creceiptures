@@ -44,10 +44,10 @@ class Tests {
             App.firestore = FirebaseFirestore.getInstance()
         }
 
-        App.firestore!!.collection("cReceipture")!!.document(pet["name"] as String)
+        App.firestore!!.collection("creceipture")!!.document(pet["name"] as String)
             .set(pet)
             .addOnSuccessListener { documentReference ->
-                App.firestore!!.collection("cReceipture").document(pet["name"] as String)
+                App.firestore!!.collection("creceipture").document(pet["name"] as String)
                     ?.get()?.addOnCompleteListener { task: Task<DocumentSnapshot> ->
                     if (task.isSuccessful) {
                         assertEquals(task.result!!["owner_og"], "testUser")
@@ -58,7 +58,7 @@ class Tests {
                 }
 
                 // cleanup
-                App.firestore!!.collection("cReceipture").document(pet["name"] as String).delete()
+                App.firestore!!.collection("creceipture").document(pet["name"] as String).delete()
             }
             .addOnFailureListener { e ->
                 fail("Error adding document")

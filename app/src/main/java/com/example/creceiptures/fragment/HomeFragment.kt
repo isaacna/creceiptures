@@ -79,7 +79,7 @@ class HomeFragment(context: Context): Fragment() {
     }
 
     private fun loadPets(username: String) {
-        App.firestore?.collection("cReceipture")?.whereEqualTo("owner_curr", username)
+        App.firestore?.collection("creceipture")?.whereEqualTo("owner_curr", username)
             ?.get()
             ?.addOnSuccessListener { result ->
                 for (document in result) {

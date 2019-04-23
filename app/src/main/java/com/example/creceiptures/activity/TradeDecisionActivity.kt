@@ -96,7 +96,7 @@ class TradeDecisionActivity : AppCompatActivity() {
 
         //swap owner of pet A to owner B
         //get og owner of pet A to get document id for pet A
-        App.firestore?.collection("cReceipture")
+        App.firestore?.collection("creceipture")
             ?.whereEqualTo("name", petA)
             ?.whereEqualTo("owner_curr", ownerA)
             ?.get()
@@ -108,7 +108,7 @@ class TradeDecisionActivity : AppCompatActivity() {
                 }
 
                 //update petA document to set ownerB as the owner
-                val petDocA = App.firestore?.collection("cReceipture")?.document(petA + "-" + owner_og)
+                val petDocA = App.firestore?.collection("creceipture")?.document(petA + "-" + owner_og)
                 petDocA?.get()?.addOnCompleteListener {task: Task<DocumentSnapshot> ->
                     if (task.isSuccessful) {
 //                        System.out.println("updating pet A ")
@@ -139,7 +139,7 @@ class TradeDecisionActivity : AppCompatActivity() {
 
         //swap owner of pet B
         //get og owner of pet B to get document id for pet B
-        App.firestore?.collection("cReceipture")
+        App.firestore?.collection("creceipture")
             ?.whereEqualTo("name", petB)
             ?.whereEqualTo("owner_curr", ownerB)
             ?.get()
@@ -151,7 +151,7 @@ class TradeDecisionActivity : AppCompatActivity() {
                 }
 
                 //update petB document to sett owner A as the owner
-                val petDocB = App.firestore?.collection("cReceipture")?.document(petB + "-" + owner_og)
+                val petDocB = App.firestore?.collection("creceipture")?.document(petB + "-" + owner_og)
                 petDocB?.get()?.addOnCompleteListener {task: Task<DocumentSnapshot> ->
                     if (task.isSuccessful) {
 //                        System.out.println("updating pet B ")

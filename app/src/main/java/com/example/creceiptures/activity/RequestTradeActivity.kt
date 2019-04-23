@@ -90,7 +90,7 @@ class RequestTradeActivity : AppCompatActivity() {
     fun loadOtherPets(username : String) {
         System.out.println("USERNAME HERE")
         System.out.println(username)
-        App.firestore?.collection("cReceipture")?.whereEqualTo("owner_curr", username)
+        App.firestore?.collection("creceipture")?.whereEqualTo("owner_curr", username)
             ?.get()
             ?.addOnSuccessListener { result ->
                 val petArray = ArrayList<PetItem>()
@@ -108,7 +108,7 @@ class RequestTradeActivity : AppCompatActivity() {
 
     //load user pets into spinner
     fun loadUserPets(username : String) {
-        App.firestore?.collection("cReceipture")?.whereEqualTo("owner_curr", username)
+        App.firestore?.collection("creceipture")?.whereEqualTo("owner_curr", username)
             ?.get()
             ?.addOnSuccessListener { result ->
                 val petArray = ArrayList<PetItem>()

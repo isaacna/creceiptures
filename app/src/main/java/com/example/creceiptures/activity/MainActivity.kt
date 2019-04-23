@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
             R.id.nav_about_us -> {
-//                displayDialog(R.layout.dialog_about_us)
+                displayDialog(R.layout.dialog_credits)
             }
             R.id.nav_sign_in_out -> {
                 if (App.firebaseAuth?.currentUser == null) {
@@ -231,17 +231,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-//    private fun displayDialog(layout: Int) {
-//        val dialog = Dialog(this)
-//        dialog.setContentView(layout)
-//
-//        val window = dialog.window
-//        window?.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
-//
-//        dialog.findViewById<Button>(R.id.close).setOnClickListener {
-//            dialog.dismiss()
-//        }
-//
-//        dialog.show()
-//    }
+    private fun displayDialog(layout: Int) {
+        val dialog = Dialog(this)
+        dialog.setContentView(layout)
+
+        val window = dialog.window
+        window?.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
+
+        dialog.findViewById<Button>(R.id.close).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
 }

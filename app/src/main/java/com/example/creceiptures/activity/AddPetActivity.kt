@@ -136,7 +136,7 @@ class AddPetActivity : AppCompatActivity() {
             data.put("value", cReceipture.value)
             data.put("imgUri", cReceipture.imgUri.toString())
 
-            val petTable = App.firestore?.collection("cReceipture")
+            val petTable = App.firestore?.collection("creceipture")
             petTable
                 ?.document(cReceipture.name + "-" + cReceipture.owner_og)
                 ?.set(data)

@@ -39,6 +39,17 @@
     <string name="play_again">Play again</string>
     <string name="back">Back</string>
 
+    <!--credits-->
+    <string name="credits_title">Credits</string>
+    <string name="credits">
+        cReceiptures was created by Ellen Dai and Isaac Na. \n\n
+
+        Special thanks to: \n
+        * Taggun.io for the OCR API \n
+        * Square, Inc. for Picasso image loading \n
+        * Github user daimajia for AndroidViewAnimations
+    </string>
+
     <!--CREATURE URIS FOR TESTING-->
     <string name="test_ellen">https://robohash.org/ellen?set=set4</string>
     <string name="test_isaac">https://robohash.org/isaac?set=set4</string>
@@ -46,7 +57,6 @@
     <string name="test_digshake">https://robohash.org/digshake?set=set4</string>
     <string name="test_taylor">https://robohash.org/taylor?set=set4</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_minigame">MinigameActivity</string>
     <string name="title_activity_add_pet">Add Pet</string>
