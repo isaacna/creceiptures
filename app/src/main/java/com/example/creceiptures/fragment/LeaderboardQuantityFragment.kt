@@ -22,16 +22,7 @@ class LeaderboardQuantityFragment(context: Context) : Fragment() {
     private var adapter: ListAdapter? = null
     private var users: ArrayList<UserInLeaderboard> = ArrayList<UserInLeaderboard>()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view: View =  inflater.inflate(R.layout.leaderboard_quantity_list, container, false)
         adapter = ListAdapter(this.context!!, 0, users)
@@ -45,7 +36,6 @@ class LeaderboardQuantityFragment(context: Context) : Fragment() {
 
     // note: would have to be more efficient in a larger scale.
     private fun loadUsers() {
-
         App.firestore?.collection("user")?.orderBy("numPets", Query.Direction.DESCENDING)
             ?.limit(15)
             ?.get()
@@ -59,7 +49,6 @@ class LeaderboardQuantityFragment(context: Context) : Fragment() {
                     )
                 }
                 adapter?.notifyDataSetChanged()
-                Log.d("Ellen", "loadUsers successful? + ${users.size}")
             }
             ?.addOnFailureListener { exception ->
                 Log.d("Ellen", "Error getting users: ", exception)

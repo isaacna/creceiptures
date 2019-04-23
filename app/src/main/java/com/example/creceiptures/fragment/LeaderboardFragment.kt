@@ -2,7 +2,6 @@ package com.example.creceiptures.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -40,21 +39,7 @@ class LeaderboardFragment(context: Context) : Fragment() {
         return fragment
     }
 
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            listener = context
-//        } else {
-//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-//        }
-//    }
-//
-//    override fun onDetach() {
-//        super.onDetach()
-//        listener = null
-//    }
-
-    // straight from Shook
+    // allow for three different metrics for rankings
     class LeaderboardPagerAdapter(fm: FragmentManager, context: Context) : FragmentPagerAdapter(fm) {
 
         private val parentContext = context

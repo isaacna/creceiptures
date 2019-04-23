@@ -7,5 +7,4 @@ class cReceiptureInLeaderboard(name: String, owner: String, value: Int, uri: Uri
     var owner: String = owner
     var value: Int = value
     var imgUri: Uri = uri
-
 }

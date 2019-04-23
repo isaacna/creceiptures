@@ -30,7 +30,6 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
     private var parentContext: Context = context
     private val petId: String = petId
     private var pet: cReceipture? = null
-//    private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,20 +37,17 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d("Ellen", "DetailsFragment onCreateView")
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("Ellen", "DetailsFragment onStart")
 
         // get pet from firebase
         val petDoc = App.firestore?.collection("cReceipture")?.document(petId)
         petDoc?.get()?.addOnCompleteListener { task: Task<DocumentSnapshot> ->
             if (task.isSuccessful) {
-                Log.d("DetailsActivity", "${petId} successfully found")
                 val data = task.result!!.data!!
                 pet = cReceipture(petId,
                     data["name"] as String,
@@ -60,7 +56,6 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
                     data["owner_curr"] as String,
                     data["owner_og"] as String
                 )
-                Log.d("DetailsActivity", pet.toString())
 
                 // update UI to reflect pet stats
                 Picasso.get()
@@ -71,7 +66,6 @@ class DetailsFragment(context: Context, petId: String) : Fragment() {
                 view!!.findViewById<TextView>(R.id.value).text = "petCoin value: ${pet?.value.toString()}"
 
                 view!!.findViewById<Button>(R.id.minigame_button).setOnClickListener{
-                    Log.d("DetailsActivity", "play button clicked")
                     val intent = Intent(context, MinigameActivity::class.java)
                     intent.putExtra("PET", pet)
                     context!!.startActivity(intent)

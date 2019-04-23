@@ -6,13 +6,11 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
@@ -24,11 +22,8 @@ import com.example.creceiptures.fragment.DetailsFragment
 import com.example.creceiptures.fragment.HomeFragment
 import com.example.creceiptures.fragment.LeaderboardFragment
 import com.example.creceiptures.fragment.NoConnectionFragment
-import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -59,23 +54,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-//        nav_view.setCheckedItem(R.id.nav_home)
 
 
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-
-        // initialize firebase stuff
+        // initialize firebase
         if (App.firebaseAuth == null) {
             App.firebaseAuth = FirebaseAuth.getInstance()
         }
         if (App.firestore == null) {
             App.firestore = FirebaseFirestore.getInstance()
         }
-//        if (App.firebaseAuth != null && App.firebaseAuth?.currentUser == null) {
-//            val intent = Intent(this, AccountActivity::class.java)
-//            startActivity(intent)
-//        }
 
         // add
         val ft = fm.beginTransaction()
@@ -121,7 +108,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // if no user logged in, go to login/signup activity
         if (App.firebaseAuth?.currentUser == null) {
-            Log.d("Ellen", "tryna open AccountActivity")
             val intent = Intent(this, AccountActivity::class.java)
             startActivityForResult(intent, SIGN_IN_REQUEST)
         }
@@ -132,20 +118,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (requestCode == SIGN_IN_REQUEST) {
             /** Make sure the request was successful */
             if (resultCode == Activity.RESULT_OK) {
-                Log.d("Ellen", "sign in successful")
-                // go to home fragment
-//                val ft = fm.beginTransaction()
-//                ft.add(R.id.frag_placeholder, HomeFragment(this), "HOME_FRAG")
-//                ft.commit()
+                Log.d("MainActivity", "sign in successful")
             }
-
         }
     }
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
+        } else if (currentView != UserInterfaceState.HOME) {    // back button goes to home fragmnet
+            if (this.isNetworkConnected) {
+                this.currentView = UserInterfaceState.HOME
+                // Load Fragment into View
+                val fm = supportFragmentManager
+                // add
+                val ft = fm.beginTransaction()
+                ft.replace(R.id.frag_placeholder, HomeFragment(this@MainActivity), "HOME_FRAG")
+                ft.commit()
+                supportActionBar?.title = "Home"
+            }
+        }
+        else {
             super.onBackPressed()
         }
     }
@@ -170,7 +163,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     ft.commit()
 
                     supportActionBar?.title = "Home"
-                    supportActionBar?.subtitle = "What's New"
                 }
             }
             R.id.nav_trade -> {
@@ -196,15 +188,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 displayDialog(R.layout.dialog_credits)
             }
             R.id.nav_sign_in_out -> {
-                if (App.firebaseAuth?.currentUser == null) {
-                    item.title = "Sign Out"
-                }
-                else {
-                    item.title = "Sign In"
-
-                    App.firebaseAuth?.signOut()
-                }
-
                 val intent = Intent(this, AccountActivity::class.java)
                 startActivity(intent)
             }
@@ -215,7 +198,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onGridItemSelect(petId: String) {
-        Log.d("Ellen", "onGridItemSelect")
         if (this.isNetworkConnected) {
             this.currentView = UserInterfaceState.DETAILS
 

@@ -2,7 +2,6 @@ package com.example.creceiptures.activity
 
 import android.app.ActionBar
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v7.app.AppCompatActivity;
@@ -18,9 +17,7 @@ import com.example.creceiptures.model.cReceipture
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.squareup.picasso.Picasso
-
 import kotlinx.android.synthetic.main.activity_minigame.*
-import kotlin.math.sqrt
 
 class MinigameActivity : AppCompatActivity() {
 
@@ -36,7 +33,6 @@ class MinigameActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         pet = intent.getParcelableExtra("PET")
-        Log.d("MinigameActivity", pet.toString())
 
         dialog = Dialog(this)
         timer = TapTimer(this)
@@ -49,26 +45,26 @@ class MinigameActivity : AppCompatActivity() {
         Picasso.get()
             .load(pet.imgUri)
             .resizeDimen(R.dimen.details_img_size, R.dimen.details_img_size)
-            .into(findViewById<ImageView>(R.id.pet))                        //Your image view object.
+            .into(findViewById<ImageView>(R.id.pet))
 
         findViewById<ImageView>(R.id.pet).setOnClickListener {
+            // if a game is currently running, one tap is one point
             if (inProgress) {
                 points++
 
-//                https://github.com/daimajia/AndroidViewAnimations
+                // https://github.com/daimajia/AndroidViewAnimations
+                // pet responds on each tap
                 YoYo.with(Techniques.Wobble)
                     .duration(300)
                     .repeat(1)
                     .playOn(findViewById(R.id.pet))
             }
-            System.out.println(points)
         }
 
     }
 
     override fun onResume() {
         super.onResume()
-
         inProgress = false
         showInitDialog()
     }
@@ -78,6 +74,7 @@ class MinigameActivity : AppCompatActivity() {
         timer.cancel()
     }
 
+    // the first dialog explaining how to play
     private fun showInitDialog() {
         dialog.setContentView(R.layout.dialog_minigame_start)
 
@@ -93,6 +90,7 @@ class MinigameActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    // dialog after time's up; can either play again or leave activity.
     private fun showEndDialog() {
         dialog.setContentView(R.layout.dialog_minigame_end)
 
@@ -112,7 +110,7 @@ class MinigameActivity : AppCompatActivity() {
         dialog.findViewById<Button>(R.id.back_button).setOnClickListener {
             System.out.println("back pressed")
             dialog.dismiss()
-            finish()   //TODO: request code?
+            finish()
         }
 
         dialog.show()

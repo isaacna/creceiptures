@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.TextView
-import android.widget.Toast
 import com.example.creceiptures.App
 import com.example.creceiptures.R
 import com.example.creceiptures.activity.MainActivity
@@ -40,8 +39,6 @@ class HomeFragment(context: Context): Fragment() {
     override fun onStart() {
         super.onStart()
 
-        Log.d("Ellen", "HomeFragment onStart")
-
         if (!this.initialized) {
             val fm = fragmentManager
             val ft = fm?.beginTransaction()
@@ -53,21 +50,15 @@ class HomeFragment(context: Context): Fragment() {
     override fun onResume() {
         super.onResume()
 
-        Log.d("Ellen", "HomeFragment onResume")
-
-
-        if (userSet == true) {
-            Log.d("Ellen", "HomeFragment onResume: userSet == true")
+        if (userSet) {
             return
         }
 
-//        val view = getView()
         if (App.firebaseAuth != null && App.firebaseAuth?.currentUser != null ) {
             val test = App.firebaseAuth?.currentUser?.email
             // get current user's username
             val user = App.firestore?.collection("user")?.document(App.firebaseAuth?.currentUser?.email!!)
             user?.get()?.addOnCompleteListener { task ->
-                Log.d("Ellen", "HomeFragment onResume: got user from firestore!")
                 val username = task.result!!.data!!["username"] as String
                 loadPets(username)
                 view!!.findViewById<TextView>(R.id.title_bar).text = "${username}'s pets"

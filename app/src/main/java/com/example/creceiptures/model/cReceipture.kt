@@ -8,7 +8,6 @@ class cReceipture(id: String, name: String, value: Int, uri: Uri, owner_curr: St
     var name: String = name
     var id: String = id
     var value: Int = value
-    // may change to drawable later, after we stop using robohash
     var imgUri: Uri = uri
 
     var owner_curr = owner_curr

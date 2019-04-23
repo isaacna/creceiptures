@@ -88,7 +88,7 @@ class TradeDecisionActivity : AppCompatActivity() {
     }
 
     //swap owners for pets and update
-    fun swapPetData(ownerA: String, owner_A_email : String, petA : String, ownerB : String, owner_B_email : String, petB: String) {
+    private fun swapPetData(ownerA: String, owner_A_email : String, petA : String, ownerB : String, owner_B_email : String, petB: String) {
 
         var valueA: Long = 0;
         var valueB: Long = 0;
@@ -120,7 +120,7 @@ class TradeDecisionActivity : AppCompatActivity() {
                         valueA = task.result!!.data!!["value"] as Long
 
                         //prevent data race
-                        if (valGotten == true) {
+                        if (valGotten) {
                             updateUserPetCoins(owner_A_email, valueA, owner_B_email, valueB)
                         }
                         else {
@@ -159,7 +159,7 @@ class TradeDecisionActivity : AppCompatActivity() {
                         valueB = task.result!!.data!!["value"] as Long
 
                         //prevent data race
-                        if (valGotten == true) {
+                        if (valGotten) {
                             updateUserPetCoins(owner_A_email, valueA, owner_B_email, valueB)
                         }
                         else {
@@ -174,7 +174,7 @@ class TradeDecisionActivity : AppCompatActivity() {
     }
 
     //update user total pet coin count
-    fun updateUserPetCoins(owner_A_email : String, valA : Long, owner_B_email : String, valB: Long) {
+    private fun updateUserPetCoins(owner_A_email : String, valA : Long, owner_B_email : String, valB: Long) {
         val userB = App.firestore?.collection("user")?.document(owner_B_email)
         userB?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
             if(task2.isSuccessful) {
@@ -184,7 +184,6 @@ class TradeDecisionActivity : AppCompatActivity() {
             }
         }
 
-        //get user A doc and subtract pet A value
         val userA = App.firestore?.collection("user")?.document(owner_A_email)
         userA?.get()?.addOnCompleteListener { task2: Task<DocumentSnapshot> ->
             if(task2.isSuccessful) {
@@ -195,7 +194,7 @@ class TradeDecisionActivity : AppCompatActivity() {
         }
     }
 
-    fun acceptTrade(accepter: String, accepter_email : String, accepter_pet : String, requester : String, requester_email : String, requester_pet: String) {
+    private fun acceptTrade(accepter: String, accepter_email : String, accepter_pet : String, requester : String, requester_email : String, requester_pet: String) {
         //update trades
         deleteTrade(accepter, accepter_pet, requester, requester_pet)
 
@@ -204,7 +203,7 @@ class TradeDecisionActivity : AppCompatActivity() {
     }
 
     //delete from trades
-    fun deleteTrade(accepter: String, accepter_pet : String, requester : String, requester_pet: String) {
+    private fun deleteTrade(accepter: String, accepter_pet : String, requester : String, requester_pet: String) {
         //update trades
         if (App.firebaseAuth != null && App.firebaseAuth?.currentUser != null ) {
             val documentPath = requester + "-" + requester_pet + "-for-" + accepter + "-" + accepter_pet

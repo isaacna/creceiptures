@@ -1,16 +1,13 @@
 package com.example.creceiptures.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,17 +15,18 @@ import android.widget.TextView
 import com.example.creceiptures.App
 import com.example.creceiptures.R
 import com.example.creceiptures.model.cReceipture
-import com.example.creceiptures.model.cReceiptureInGrid
 import com.example.creceiptures.utils.AsyncUtils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.creceipture_grid_item.view.*
 import java.io.*
 
 class AddPetActivity : AppCompatActivity() {
 
     private val logTag: String = this.javaClass.toString()
+    companion object {
+        private val REQUEST_SELECT_IMAGE_IN_ALBUM = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +36,7 @@ class AddPetActivity : AppCompatActivity() {
     }
 
     //get an image from camera roll
-    fun selectImageInAlbum() {
+    private fun selectImageInAlbum() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         if (intent.resolveActivity(packageManager) != null) {
@@ -46,10 +44,6 @@ class AddPetActivity : AppCompatActivity() {
                 REQUEST_SELECT_IMAGE_IN_ALBUM
             )
         }
-    }
-
-    companion object {
-        private val REQUEST_SELECT_IMAGE_IN_ALBUM = 1
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -118,10 +112,13 @@ class AddPetActivity : AppCompatActivity() {
                 }
 
             }
+            else {
+                this.finish()
+            }
         }
     }
 
-    fun addPetToFirebase(cReceipture: cReceipture) {
+    private fun addPetToFirebase(cReceipture: cReceipture) {
         if (App.firebaseAuth != null && App.firebaseAuth?.currentUser != null ) {
 
             val data: HashMap<String, Any> = HashMap<String, Any>()
@@ -166,7 +163,7 @@ class AddPetActivity : AppCompatActivity() {
     }
 
     //load pet image
-    fun getPetImage(uri: Uri) {
+    private fun getPetImage(uri: Uri) {
 
         val petView : ImageView = findViewById(R.id.newGeneratedPet)
 

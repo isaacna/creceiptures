@@ -22,12 +22,6 @@ class LeaderboardTotalFragment(context: Context) : Fragment() {
     private var adapter: ListAdapter? = null
     private var users: ArrayList<UserInLeaderboard> = ArrayList<UserInLeaderboard>()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -1,9 +1,7 @@
 package com.example.creceiptures.activity
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
-import com.example.creceiptures.App
 import com.example.creceiptures.R
 import com.example.creceiptures.adapter.AccountPagerAdapter
 import kotlinx.android.synthetic.main.activity_account.*

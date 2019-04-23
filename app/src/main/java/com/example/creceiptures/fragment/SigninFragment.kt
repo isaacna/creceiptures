@@ -31,12 +31,9 @@ class SigninFragment(context: Context): Fragment() {
         super.onStart()
 
         sign_in.setOnClickListener {
-            Log.d("Ellen", "logging in?")
-
             val email = email.text.toString()
             val password = password.text.toString()
 
-            // TODO: Implement sign in with email and password; if user authenticates successfully, finish activity; else make a toast
             App.firebaseAuth?.signInWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {

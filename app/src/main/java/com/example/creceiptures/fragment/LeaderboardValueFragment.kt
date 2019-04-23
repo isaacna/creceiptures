@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import com.example.creceiptures.R
 import com.example.creceiptures.model.cReceiptureInLeaderboard
 import com.google.firebase.firestore.Query
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.creceipture_grid_item.view.*
 import kotlinx.android.synthetic.main.leaderboard_value_list_item.view.*
 
 @SuppressLint("ValidFragment")
@@ -27,16 +25,7 @@ class LeaderboardValueFragment(context: Context) : Fragment() {
     private var adapter: ListAdapter? = null
     private var pets: ArrayList<cReceiptureInLeaderboard> = ArrayList<cReceiptureInLeaderboard>()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view: View =  inflater.inflate(R.layout.leaderboard_value_list, container, false)
         adapter = ListAdapter(this.context!!, 0, pets)
@@ -79,7 +68,7 @@ class LeaderboardValueFragment(context: Context) : Fragment() {
             Picasso.get()
                 .load(pet.imgUri)
                 .resizeDimen(R.dimen.leaderboard_img_size, R.dimen.leaderboard_img_size)
-                .into(rowView.pet_icon)                        //Your image view object.
+                .into(rowView.pet_icon)
             (rowView.findViewById(R.id.rank) as TextView).text = (position + 1).toString()
             (rowView.findViewById(R.id.pet_name) as TextView).text = pet.name
             (rowView.findViewById(R.id.owner) as TextView).text = pet.owner

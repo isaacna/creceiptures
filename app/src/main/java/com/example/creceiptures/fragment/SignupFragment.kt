@@ -55,10 +55,7 @@ class SignupFragment(context: Context): Fragment() {
                                 ?.document(email)
                                 ?.set(user)
                                 ?.addOnSuccessListener { documentReference ->
-                                    Log.d(
-                                        logTag,
-                                        "DocumentSnapshot added with ID: " + email
-                                    )
+                                    Log.d(logTag, "DocumentSnapshot added with ID: $email")
                                 }
                                 ?.addOnFailureListener { e -> Log.w(logTag, "Error adding document", e) }
 
@@ -69,10 +66,7 @@ class SignupFragment(context: Context): Fragment() {
                             activity!!.finish()
 
                         } else {
-                            Toast.makeText(
-                                parentContext, "Authentication failed",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(parentContext, "Authentication failed", Toast.LENGTH_SHORT).show()
                             System.out.println(task.exception.toString())
                         }
                     }

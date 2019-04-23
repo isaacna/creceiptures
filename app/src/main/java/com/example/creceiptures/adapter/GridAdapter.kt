@@ -1,8 +1,6 @@
 package com.example.creceiptures.adapter
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +15,9 @@ class GridAdapter: BaseAdapter {
     var context: Context? = null
     var listener: OnGridItemSelectListener? = null
 
-    constructor(context: Context, songlist: ArrayList<cReceiptureInGrid>, listener: OnGridItemSelectListener) : super() {
+    constructor(context: Context, petList: ArrayList<cReceiptureInGrid>, listener: OnGridItemSelectListener) : super() {
         this.context = context
-        this.petList = songlist
+        this.petList = petList
         this.listener = listener
     }
 
@@ -45,13 +43,12 @@ class GridAdapter: BaseAdapter {
         Picasso.get()
             .load(pet.imgUri)
             .resizeDimen(R.dimen.grid_img_size, R.dimen.grid_img_size)
-            .into(petView.img)                        //Your image view object.
+            .into(petView.img)
         petView.name.text = pet.name
         petView.value.text = pet.value.toString()
 
-//         load up DetailsActivity with this song's info on click
+//         load up DetailsActivity with this pet's info on click
         petView.setOnClickListener {
-            Log.d("Ellen", "grid item clicked")
             listener?.onGridItemSelect(pet.id)
         }
 
